@@ -236,18 +236,18 @@
           : "https://cdn-icons-png.flaticon.com/512/2721/2721298.png"; // fallback
 
         const card = `
-          <div class="col-md-4 mb-4">
-            <a href="https://github.com/${username}/${repo}/tree/main/${folder.name}" target="_blank" class="text-decoration-none text-dark">
-              <div class="card h-100 shadow-sm">
-                <img src="${imageUrl}" class="card-img-top" alt="Project image">
-                <div class="card-body">
-                  <small class="text-muted">${folder.name}</small>
-                  <h5 class="card-title mt-2">${folder.name.replace(/[-_]/g, ' ')}</h5>
-                  <p class="card-text">${readmeText.split('\n')[0]}</p>
-                </div>
-              </div>
-            </a>
+              <div class="col-md-4 mb-4">
+      <a href="https://github.com/${username}/${repo}/tree/main/${folder.name}" target="_blank" class="text-decoration-none text-dark">
+        <div class="card h-100 shadow-sm">
+          <img src="${imageUrl}" class="card-img-top" alt="Project image">
+          <div class="card-body">
+            <small class="text-muted">${folder.name}</small>
+            <h5 class="card-title mt-2">${folder.name.replace(/[-_]/g, ' ')}</h5>
+            <p class="card-text">${readmeText}</p>
           </div>
+        </div>
+      </a>
+    </div>
         `;
         container.innerHTML += card;
       }
