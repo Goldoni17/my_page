@@ -70,61 +70,20 @@
             <hr class="m-0" />
             <!-- Projects -->
             <section class="resume-section" id="projects">
-                <div class="resume-section-content">
-                    <h2 class="mb-5">My Latest Projects</h2>
-                    <p class="mb-5">Take a look at my recent work.</p>
+              <div class="resume-section-content">
+                <h2 class="mb-5">My Latest Projects</h2>
+                <p class="mb-5">Take a look at my recent work.</p>
             
-                    <div class="row">
-                        <!-- Projeto 1 -->
-                        <div class="col-md-4 mb-4">
-                            <a href="https://github.com/seu-usuario/aws-ec2-bash" target="_blank" class="text-decoration-none text-dark">
-                                <div class="card h-100 shadow-sm">
-                                    <img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" class="card-img-top" alt="Project Image 1">
-                                    <div class="card-body">
-                                        <small class="text-muted">Jan 20, 2020</small>
-                                        <h5 class="card-title mt-2">Automating AWS EC2 Shutdown with Bash Scripts</h5>
-                                        <p class="card-text">A helpful tutorial for automating EC2 lifecycle using Bash scripts, including startup and shutdown commands via AWS CLI.</p>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
+                <div id="github-projects" class="row"></div>
             
-                        <!-- Projeto 2 -->
-                        <div class="col-md-4 mb-4">
-                            <a href="https://github.com/seu-usuario/lstm-language-modeling" target="_blank" class="text-decoration-none text-dark">
-                                <div class="card h-100 shadow-sm">
-                                    <img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*R2v03zJweU9eDQrcS73BFA.png" class="card-img-top" alt="Project Image 2">
-                                    <div class="card-body">
-                                        <small class="text-muted">Dec 10, 2019</small>
-                                        <h5 class="card-title mt-2">RNNs, LSTMs and Attention Mechanisms for Language Modeling</h5>
-                                        <p class="card-text">Explored sequence modeling using PyTorch, applying Word2Vec and LSTM to predict the next word in context.</p>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-            
-                        <!-- Projeto 3 -->
-                        <div class="col-md-4 mb-4">
-                            <a href="https://github.com/seu-usuario/davisbase" target="_blank" class="text-decoration-none text-dark">
-                                <div class="card h-100 shadow-sm">
-                                    <img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*c6KbjrKMgWv7O-BfOFh63g.png" class="card-img-top" alt="Project Image 3">
-                                    <div class="card-body">
-                                        <small class="text-muted">Dec 2, 2019</small>
-                                        <h5 class="card-title mt-2">DavisBase: A Custom Designed Database (Python)</h5>
-                                        <p class="card-text">Designed a compact, SQL-like database in Python with custom data encoding, file system simulation and query engine.</p>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-            
-                    <!-- Botão Ver mais -->
-                    <div class="text-center mt-4">
-                        <a href="https://github.com/seu-usuario" class="btn btn-primary" target="_blank">See More Projects</a>
-                    </div>
+                <!-- Botão Ver mais -->
+                <div class="text-center mt-4">
+                  <a href="https://github.com/Goldoni17" class="btn btn-primary" target="_blank">See More Projects</a>
                 </div>
+              </div>
             </section>
             <hr class="m-0" />
+
             <!-- Education-->
             <section class="resume-section" id="education">
                 <div class="resume-section-content">
@@ -245,5 +204,50 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
         <!-- Core theme JS-->
         <script src="js/scripts.js"></script>
+        <script>
+  const imageMap = {
+    "aws-ec2-bash": "https://cdn-icons-png.flaticon.com/512/174/174857.png",
+    "lstm-language-modeling": "https://miro.medium.com/v2/resize:fit:640/format:webp/1*R2v03zJweU9eDQrcS73BFA.png",
+    "davisbase": "https://miro.medium.com/v2/resize:fit:640/format:webp/1*c6KbjrKMgWv7O-BfOFh63g.png"
+  };
+
+  const defaultImage = "https://cdn-icons-png.flaticon.com/512/2721/2721298.png";
+
+  fetch("https://api.github.com/users/Goldoni17/repos?sort=created&direction=desc")
+    .then(response => response.json())
+    .then(repos => {
+      const container = document.getElementById("github-projects");
+      const recentRepos = repos
+        .filter(repo => !repo.fork)
+        .slice(0, 3);
+
+      recentRepos.forEach(repo => {
+        const imgSrc = imageMap[repo.name] || defaultImage;
+        const date = new Date(repo.created_at).toLocaleDateString('en-US', {
+          year: 'numeric', month: 'short', day: 'numeric'
+        });
+
+        const card = `
+          <div class="col-md-4 mb-4">
+            <a href="${repo.html_url}" target="_blank" class="text-decoration-none text-dark">
+              <div class="card h-100 shadow-sm">
+                <img src="${imgSrc}" class="card-img-top" alt="Project Image">
+                <div class="card-body">
+                  <small class="text-muted">${date}</small>
+                  <h5 class="card-title mt-2">${repo.name}</h5>
+                  <p class="card-text">${repo.description || "No description available."}</p>
+                </div>
+              </div>
+            </a>
+          </div>
+        `;
+        container.innerHTML += card;
+      });
+    })
+    .catch(error => {
+      console.error("Erro ao carregar projetos:", error);
+      document.getElementById("github-projects").innerHTML = "<p>Erro ao carregar projetos do GitHub.</p>";
+    });
+</script>
     </body>
 </html>
