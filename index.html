@@ -205,49 +205,60 @@
         <!-- Core theme JS-->
         <script src="js/scripts.js"></script>
         <script>
-  const imageMap = {
-    "aws-ec2-bash": "https://cdn-icons-png.flaticon.com/512/174/174857.png",
-    "lstm-language-modeling": "https://miro.medium.com/v2/resize:fit:640/format:webp/1*R2v03zJweU9eDQrcS73BFA.png",
-    "davisbase": "https://miro.medium.com/v2/resize:fit:640/format:webp/1*c6KbjrKMgWv7O-BfOFh63g.png"
-  };
+  const username = "Goldoni17";
+  const repo = "projetos";
+  const baseUrl = `https://api.github.com/repos/${username}/${repo}/contents`;
 
-  const defaultImage = "https://cdn-icons-png.flaticon.com/512/2721/2721298.png";
+  async function getProjects() {
+    try {
+      const response = await fetch(baseUrl);
+      const folders = await response.json();
 
-  fetch("https://api.github.com/users/Goldoni17/repos?sort=created&direction=desc")
-    .then(response => response.json())
-    .then(repos => {
+      const projectFolders = folders.filter(item => item.type === "dir").slice(0, 3);
+
       const container = document.getElementById("github-projects");
-      const recentRepos = repos
-        .filter(repo => !repo.fork)
-        .slice(0, 3);
 
-      recentRepos.forEach(repo => {
-        const imgSrc = imageMap[repo.name] || defaultImage;
-        const date = new Date(repo.created_at).toLocaleDateString('en-US', {
-          year: 'numeric', month: 'short', day: 'numeric'
-        });
+      for (const folder of projectFolders) {
+        const projectUrl = `${baseUrl}/${folder.name}`;
+
+        // Buscar arquivos dentro da pasta do projeto
+        const files = await fetch(projectUrl).then(res => res.json());
+
+        const readmeFile = files.find(f => f.name.toLowerCase() === "readme.md");
+        const imageFile = files.find(f => f.name.toLowerCase().includes("cover"));
+
+        const readmeText = readmeFile
+          ? await fetch(readmeFile.download_url).then(res => res.text())
+          : "No description available.";
+
+        const imageUrl = imageFile
+          ? imageFile.download_url
+          : "https://cdn-icons-png.flaticon.com/512/2721/2721298.png"; // fallback
 
         const card = `
           <div class="col-md-4 mb-4">
-            <a href="${repo.html_url}" target="_blank" class="text-decoration-none text-dark">
+            <a href="https://github.com/${username}/${repo}/tree/main/${folder.name}" target="_blank" class="text-decoration-none text-dark">
               <div class="card h-100 shadow-sm">
-                <img src="${imgSrc}" class="card-img-top" alt="Project Image">
+                <img src="${imageUrl}" class="card-img-top" alt="Project image">
                 <div class="card-body">
-                  <small class="text-muted">${date}</small>
-                  <h5 class="card-title mt-2">${repo.name}</h5>
-                  <p class="card-text">${repo.description || "No description available."}</p>
+                  <small class="text-muted">${folder.name}</small>
+                  <h5 class="card-title mt-2">${folder.name.replace(/[-_]/g, ' ')}</h5>
+                  <p class="card-text">${readmeText.split('\n')[0]}</p>
                 </div>
               </div>
             </a>
           </div>
         `;
         container.innerHTML += card;
-      });
-    })
-    .catch(error => {
-      console.error("Erro ao carregar projetos:", error);
-      document.getElementById("github-projects").innerHTML = "<p>Erro ao carregar projetos do GitHub.</p>";
-    });
+      }
+    } catch (error) {
+      console.error("Erro ao carregar projetos personalizados:", error);
+      document.getElementById("github-projects").innerHTML = "<p>Erro ao carregar os projetos.</p>";
+    }
+  }
+
+  getProjects();
 </script>
+
     </body>
 </html>
