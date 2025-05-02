@@ -144,6 +144,13 @@
     const container = document.getElementById("github-projects");
     const filterSelect = document.getElementById("toolFilter");
 
+    const toolToExtension = {
+        "Python": ".ipynb",
+        "SQL": ".sql",
+        "Power BI": ".pbix",
+        "MongoDB": ".ipynb"
+    };
+
     let allProjects = [];
 
     async function getProjects() {
@@ -178,7 +185,8 @@
                     readme: readmeText,
                     tools: toolsText.split(',').map(tool => tool.trim()),
                     imageUrl: imageUrl,
-                    url: `https://github.com/${username}/${repo}/tree/main/${folder.name}`
+                    files: files,
+                    defaultUrl: `https://github.com/${username}/${repo}/tree/main/${folder.name}`
                 });
             }
 
@@ -192,6 +200,8 @@
     function renderProjects(filter) {
         container.innerHTML = "";
 
+        const extension = toolToExtension[filter] || null;
+
         const filtered = filter === "all"
             ? allProjects
             : allProjects.filter(p => p.tools.includes(filter));
@@ -202,9 +212,18 @@
         }
 
         filtered.slice(0, 3).forEach(project => {
+            let finalUrl = project.defaultUrl;
+
+            if (extension && project.files) {
+                const match = project.files.find(f => f.name.toLowerCase().endsWith(extension));
+                if (match) {
+                    finalUrl = `https://github.com/${username}/${repo}/blob/main/${project.name}/${match.name}`;
+                }
+            }
+
             const card = `
                 <div class="col-md-4 mb-4">
-                    <a href="${project.url}" target="_blank" class="text-decoration-none text-dark">
+                    <a href="${finalUrl}" target="_blank" class="text-decoration-none text-dark">
                         <div class="card h-100 shadow-sm">
                             <img src="${project.imageUrl}" class="card-img-top" alt="Cover image for ${project.name}">
                             <div class="card-body">
