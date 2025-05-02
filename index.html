@@ -64,27 +64,29 @@
                 </div>
             </section>
             <hr class="m-0" />
-            <section class="resume-section" id="projects">
-                <div class="resume-section-content">
-                    <h2 class="mb-5">My Latest Projects</h2>
-                    <p class="mb-5">Take a look at my recent work.</p>
-                     <div class="mb-4">
-              <label for="toolFilter" class="form-label">Filter by tool:</label>
-              <select id="toolFilter" class="form-select">
-                  <option value="all">All</option>
-                  <option value="Python">Python</option>
-                  <option value="Power BI">Power BI</option>
-                  <option value="SQL">SQL</option>
-                  <option value="MongoDB">MongoDB</option>
-              </select>
-          </div>
-  
-                      <div id="github-projects" class="row"></div>
-                      <div class="text-center mt-4">
-                          <a href="https://github.com/Goldoni17" class="btn btn-primary" target="_blank">See More Projects</a>
-                      </div>
-                  </div>
-              </section>
+            <!-- Project Section -->
+<section class="resume-section" id="projects">
+    <div class="resume-section-content">
+        <h2 class="mb-5">My Latest Projects</h2>
+        <p class="mb-5">Take a look at my recent work.</p>
+
+        <div class="mb-4">
+            <label for="toolFilter" class="form-label">Filter by tool:</label>
+            <select id="toolFilter" class="form-select">
+                <option value="all">All</option>
+                <option value="Python">Python</option>
+                <option value="Power BI">Power BI</option>
+                <option value="SQL">SQL</option>
+                <option value="MongoDB">MongoDB</option>
+            </select>
+        </div>
+
+        <div id="github-projects" class="row"></div>
+        <div class="text-center mt-4">
+            <a href="https://github.com/Goldoni17" class="btn btn-primary" target="_blank">See More Projects</a>
+        </div>
+    </div>
+</section>
               <hr class="m-0" />
               <section class="resume-section" id="education">
                   <div class="resume-section-content">
@@ -144,12 +146,7 @@
     const container = document.getElementById("github-projects");
     const filterSelect = document.getElementById("toolFilter");
 
-    const toolToExtension = {
-        "Python": ".ipynb",
-        "SQL": ".sql",
-        "Power BI": ".pbix",
-        "MongoDB": ".ipynb"
-    };
+    const priorityExtensions = [".ipynb", ".sql", ".pbix", ".pdf", ".html"];
 
     let allProjects = [];
 
@@ -179,14 +176,23 @@
                     ? imageFile.download_url
                     : "https://cdn-icons-png.flaticon.com/512/2721/2721298.png";
 
+                let projectFileUrl = null;
+                for (const ext of priorityExtensions) {
+                    const file = files.find(f => f.name.toLowerCase().endsWith(ext));
+                    if (file) {
+                        projectFileUrl = file.download_url;
+                        break;
+                    }
+                }
+
                 allProjects.push({
                     name: folder.name,
                     displayName: folder.name.replace(/[-_]/g, ' '),
                     readme: readmeText,
                     tools: toolsText.split(',').map(tool => tool.trim()),
                     imageUrl: imageUrl,
-                    files: files,
-                    defaultUrl: `https://github.com/${username}/${repo}/tree/main/${folder.name}`
+                    url: `https://github.com/${username}/${repo}/tree/main/${folder.name}`,
+                    fileUrl: projectFileUrl
                 });
             }
 
@@ -200,8 +206,6 @@
     function renderProjects(filter) {
         container.innerHTML = "";
 
-        const extension = toolToExtension[filter] || null;
-
         const filtered = filter === "all"
             ? allProjects
             : allProjects.filter(p => p.tools.includes(filter));
@@ -212,18 +216,11 @@
         }
 
         filtered.slice(0, 3).forEach(project => {
-            let finalUrl = project.defaultUrl;
-
-            if (extension && project.files) {
-                const match = project.files.find(f => f.name.toLowerCase().endsWith(extension));
-                if (match) {
-                    finalUrl = `https://github.com/${username}/${repo}/blob/main/${project.name}/${match.name}`;
-                }
-            }
+            const linkUrl = filter === "all" && project.fileUrl ? project.fileUrl : project.url;
 
             const card = `
                 <div class="col-md-4 mb-4">
-                    <a href="${finalUrl}" target="_blank" class="text-decoration-none text-dark">
+                    <a href="${linkUrl}" target="_blank" class="text-decoration-none text-dark">
                         <div class="card h-100 shadow-sm">
                             <img src="${project.imageUrl}" class="card-img-top" alt="Cover image for ${project.name}">
                             <div class="card-body">
@@ -245,3 +242,6 @@
 
     getProjects();
 </script>
+</body>
+</html>
+
