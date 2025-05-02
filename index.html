@@ -68,116 +68,161 @@
                 <div class="resume-section-content">
                     <h2 class="mb-5">My Latest Projects</h2>
                     <p class="mb-5">Take a look at my recent work.</p>
-                    <div id="github-projects" class="row"></div>
-                    <div class="text-center mt-4">
-                        <a href="https://github.com/Goldoni17" class="btn btn-primary" target="_blank">See More Projects</a>
-                    </div>
-                </div>
-            </section>
-            <hr class="m-0" />
-            <section class="resume-section" id="education">
-                <div class="resume-section-content">
-                    <h2 class="mb-5">Education</h2>
-                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
-                        <div class="flex-grow-1">
-                            <h3 class="mb-0">Universidade São Judas Tadeu</h3>
-                            <div class="subheading mb-3">Bachelor of Technology</div>
-                            <div>Banco de Dados - Data Science, Big Data e BI</div>
-                        </div>
-                        <div class="flex-shrink-0"><span class="text-primary">August 2023 - December 2025</span></div>
-                    </div>
-                </div>
-            </section>
-            <hr class="m-0" />
-            <section class="resume-section" id="skills">
-                <div class="resume-section-content">
-                    <h2 class="mb-5">Skills</h2>
-                    <div class="subheading mb-3">Programming Languages & Tools</div>
-                    <ul class="list-inline dev-icons">
-                        <li class="list-inline-item"><img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/python/python-original.svg" alt="Python" title="Python" width="40" height="40"></li>
-                        <li class="list-inline-item"><img src="https://raw.githubusercontent.com/valohai/ml-logos/master/pandas.svg" alt="Pandas" title="Pandas" width="40" height="40"></li>
-                        <li class="list-inline-item"><img src="https://raw.githubusercontent.com/valohai/ml-logos/master/numpy.svg" alt="NumPy" title="NumPy" width="40" height="40"></li>
-                        <li class="list-inline-item"><img src="https://cdn-icons-png.flaticon.com/512/4248/4248443.png" alt="SQL" title="SQL" width="40" height="40"></li>
-                        <li class="list-inline-item"><img src="https://cdn-icons-png.flaticon.com/512/732/732220.png" alt="Excel" title="Excel" width="40" height="40"></li>
-                        <li class="list-inline-item"><img src="https://www.r-project.org/logo/Rlogo.png" alt="R" title="R" width="40" height="40"></li>
-                        <li class="list-inline-item"><img src="https://upload.wikimedia.org/wikipedia/commons/3/38/Jupyter_logo.svg" alt="Jupyter Notebooks" title="Jupyter Notebooks" width="40" height="40"></li>
-                        <li class="list-inline-item"><img src="https://raw.githubusercontent.com/valohai/ml-logos/master/scikit-learn.svg" alt="Scikit-learn" title="Scikit-learn" width="40" height="40"></li>
-                    </ul>
-                    <div class="subheading mb-3">Workflow</div>
-                    <ul class="fa-ul mb-0">
-                        <li><span class="fa-li"><i class="fas fa-check"></i></span>Data Analysis, Cleaning and Visualization</li>
-                        <li><span class="fa-li"><i class="fas fa-check"></i></span>Machine Learning and Statistics</li>
-                        <li><span class="fa-li"><i class="fas fa-check"></i></span>Cloud</li>
-                        <li><span class="fa-li"><i class="fas fa-check"></i></span>Business Intelligence</li>
-                    </ul>
-                </div>
-            </section>
-            <hr class="m-0" />
-            <section class="resume-section" id="awards">
-                <div class="resume-section-content">
-                    <h2 class="mb-5">Awards & Certifications</h2>
-                    <ul class="fa-ul mb-0">
-                        <li><span class="fa-li"><i class="fas fa-trophy text-warning"></i></span>Fundamentos de Linguagem Python para Análise de Dados e Data Science - DSA</li>
-                        <li><span class="fa-li"><i class="fas fa-trophy text-warning"></i></span>Introduction to Data Science - Cisco</li>
-                        <li><span class="fa-li"><i class="fas fa-trophy text-warning"></i></span>Google Cloud Foundations - Google</li>
-                    </ul>
-                </div>
-            </section>
-        </div>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="js/scripts.js"></script>
-        <script>
-            const username = "Goldoni17";
-            const repo = "projetos";
-            const baseUrl = `https://api.github.com/repos/${username}/${repo}/contents`;
+                     <div class="mb-4">
+              <label for="toolFilter" class="form-label">Filter by tool:</label>
+              <select id="toolFilter" class="form-select">
+                  <option value="all">All</option>
+                  <option value="Python">Python</option>
+                  <option value="Power BI">Power BI</option>
+                  <option value="SQL">SQL</option>
+                  <option value="MongoDB">MongoDB</option>
+              </select>
+          </div>
+  
+                      <div id="github-projects" class="row"></div>
+                      <div class="text-center mt-4">
+                          <a href="https://github.com/Goldoni17" class="btn btn-primary" target="_blank">See More Projects</a>
+                      </div>
+                  </div>
+              </section>
+              <hr class="m-0" />
+              <section class="resume-section" id="education">
+                  <div class="resume-section-content">
+                      <h2 class="mb-5">Education</h2>
+                      <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                          <div class="flex-grow-1">
+                              <h3 class="mb-0">Universidade São Judas Tadeu</h3>
+                              <div class="subheading mb-3">Bachelor of Technology</div>
+                              <div>Banco de Dados - Data Science, Big Data e BI</div>
+                          </div>
+                          <div class="flex-shrink-0"><span class="text-primary">August 2023 - December 2025</span></div>
+                      </div>
+                  </div>
+              </section>
+              <hr class="m-0" />
+              <section class="resume-section" id="skills">
+                  <div class="resume-section-content">
+                      <h2 class="mb-5">Skills</h2>
+                      <div class="subheading mb-3">Programming Languages & Tools</div>
+                      <ul class="list-inline dev-icons">
+                          <li class="list-inline-item"><img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/python/python-original.svg" alt="Python" title="Python" width="40" height="40"></li>
+                          <li class="list-inline-item"><img src="https://raw.githubusercontent.com/valohai/ml-logos/master/pandas.svg" alt="Pandas" title="Pandas" width="40" height="40"></li>
+                          <li class="list-inline-item"><img src="https://raw.githubusercontent.com/valohai/ml-logos/master/numpy.svg" alt="NumPy" title="NumPy" width="40" height="40"></li>
+                          <li class="list-inline-item"><img src="https://cdn-icons-png.flaticon.com/512/4248/4248443.png" alt="SQL" title="SQL" width="40" height="40"></li>
+                          <li class="list-inline-item"><img src="https://cdn-icons-png.flaticon.com/512/732/732220.png" alt="Excel" title="Excel" width="40" height="40"></li>
+                          <li class="list-inline-item"><img src="https://www.r-project.org/logo/Rlogo.png" alt="R" title="R" width="40" height="40"></li>
+                          <li class="list-inline-item"><img src="https://upload.wikimedia.org/wikipedia/commons/3/38/Jupyter_logo.svg" alt="Jupyter Notebooks" title="Jupyter Notebooks" width="40" height="40"></li>
+                          <li class="list-inline-item"><img src="https://raw.githubusercontent.com/valohai/ml-logos/master/scikit-learn.svg" alt="Scikit-learn" title="Scikit-learn" width="40" height="40"></li>
+                      </ul>
+                      <div class="subheading mb-3">Workflow</div>
+                      <ul class="fa-ul mb-0">
+                          <li><span class="fa-li"><i class="fas fa-check"></i></span>Data Analysis, Cleaning and Visualization</li>
+                          <li><span class="fa-li"><i class="fas fa-check"></i></span>Machine Learning and Statistics</li>
+                          <li><span class="fa-li"><i class="fas fa-check"></i></span>Cloud</li>
+                          <li><span class="fa-li"><i class="fas fa-check"></i></span>Business Intelligence</li>
+                      </ul>
+                  </div>
+              </section>
+              <hr class="m-0" />
+              <section class="resume-section" id="awards">
+                  <div class="resume-section-content">
+                      <h2 class="mb-5">Awards & Certifications</h2>
+                      <ul class="fa-ul mb-0">
+                          <li><span class="fa-li"><i class="fas fa-trophy text-warning"></i></span>Fundamentos de Linguagem Python para Análise de Dados e Data Science - DSA</li>
+                          <li><span class="fa-li"><i class="fas fa-trophy text-warning"></i></span>Introduction to Data Science - Cisco</li>
+                          <li><span class="fa-li"><i class="fas fa-trophy text-warning"></i></span>Google Cloud Foundations - Google</li>
+                      </ul>
+                  </div>
+              </section>
+          </div>
+          <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+          <script src="js/scripts.js"></script>
+          <script>
+    const username = "Goldoni17";
+    const repo = "projetos";
+    const baseUrl = `https://api.github.com/repos/${username}/${repo}/contents`;
+    const container = document.getElementById("github-projects");
+    const filterSelect = document.getElementById("toolFilter");
 
-            async function getProjects() {
-                try {
-                    const response = await fetch(baseUrl);
-                    const folders = await response.json();
+    let allProjects = [];
 
-                    const projectFolders = folders.filter(item => item.type === "dir").slice(0, 3);
-                    const container = document.getElementById("github-projects");
+    async function getProjects() {
+        try {
+            const response = await fetch(baseUrl);
+            const folders = await response.json();
+            const projectFolders = folders.filter(item => item.type === "dir");
 
-                    for (const folder of projectFolders) {
-                        const projectUrl = `${baseUrl}/${folder.name}`;
-                        const files = await fetch(projectUrl).then(res => res.json());
+            for (const folder of projectFolders) {
+                const projectUrl = `${baseUrl}/${folder.name}`;
+                const files = await fetch(projectUrl).then(res => res.json());
 
-                        const readmeFile = files.find(f => f.name.toLowerCase() === "readme.md");
-                        const imageFile = files.find(f => f.name.toLowerCase().includes("cover"));
+                const readmeFile = files.find(f => f.name.toLowerCase() === "readme.md");
+                const toolsFile = files.find(f => f.name.toLowerCase() === "tools.txt");
+                const imageFile = files.find(f => f.name.toLowerCase().includes("cover"));
 
-                        const readmeText = readmeFile
-                            ? await fetch(readmeFile.download_url).then(res => res.text())
-                            : "No description available.";
+                const readmeText = readmeFile
+                    ? await fetch(readmeFile.download_url).then(res => res.text())
+                    : "No description available.";
 
-                        const imageUrl = imageFile
-                            ? imageFile.download_url
-                            : "https://cdn-icons-png.flaticon.com/512/2721/2721298.png";
+                const toolsText = toolsFile
+                    ? await fetch(toolsFile.download_url).then(res => res.text())
+                    : "";
 
-                        const card = `
-                            <div class="col-md-4 mb-4">
-                                <a href="https://github.com/${username}/${repo}/tree/main/${folder.name}" target="_blank" class="text-decoration-none text-dark">
-                                    <div class="card h-100 shadow-sm">
-                                        <img src="${imageUrl}" class="card-img-top" alt="Cover image for ${folder.name}">
-                                        <div class="card-body">
-                                            <small class="text-muted">${folder.name}</small>
-                                            <h5 class="card-title mt-2">${folder.name.replace(/[-_]/g, ' ')}</h5>
-                                            <p class="card-text">${readmeText}</p>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        `;
+                const imageUrl = imageFile
+                    ? imageFile.download_url
+                    : "https://cdn-icons-png.flaticon.com/512/2721/2721298.png";
 
-                        container.innerHTML += card;
-                    }
-                } catch (error) {
-                    console.error("Erro ao carregar projetos personalizados:", error);
-                    document.getElementById("github-projects").innerHTML = "<p>Erro ao carregar os projetos.</p>";
-                }
+                allProjects.push({
+                    name: folder.name,
+                    displayName: folder.name.replace(/[-_]/g, ' '),
+                    readme: readmeText,
+                    tools: toolsText.split(',').map(tool => tool.trim()),
+                    imageUrl: imageUrl,
+                    url: `https://github.com/${username}/${repo}/tree/main/${folder.name}`
+                });
             }
 
-            getProjects();
-        </script>
-    </body>
-</html>
+            renderProjects("all");
+        } catch (error) {
+            console.error("Erro ao carregar projetos:", error);
+            container.innerHTML = "<p>Erro ao carregar os projetos.</p>";
+        }
+    }
+
+    function renderProjects(filter) {
+        container.innerHTML = "";
+
+        const filtered = filter === "all"
+            ? allProjects
+            : allProjects.filter(p => p.tools.includes(filter));
+
+        if (filtered.length === 0) {
+            container.innerHTML = "<p>No projects match this filter.</p>";
+            return;
+        }
+
+        filtered.slice(0, 3).forEach(project => {
+            const card = `
+                <div class="col-md-4 mb-4">
+                    <a href="${project.url}" target="_blank" class="text-decoration-none text-dark">
+                        <div class="card h-100 shadow-sm">
+                            <img src="${project.imageUrl}" class="card-img-top" alt="Cover image for ${project.name}">
+                            <div class="card-body">
+                                <small class="text-muted">${project.name}</small>
+                                <h5 class="card-title mt-2">${project.displayName}</h5>
+                                <p class="card-text">${project.readme}</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            `;
+            container.innerHTML += card;
+        });
+    }
+
+    filterSelect.addEventListener("change", () => {
+        renderProjects(filterSelect.value);
+    });
+
+    getProjects();
+</script>
