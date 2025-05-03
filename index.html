@@ -180,7 +180,7 @@
                 for (const ext of priorityExtensions) {
                     const file = files.find(f => f.name.toLowerCase().endsWith(ext));
                     if (file) {
-                        projectFileUrl = file.download_url;
+                        projectFileUrl = `https://github.com/${username}/${repo}/blob/main/${folder.name}/${file.name}`;
                         break;
                     }
                 }
