@@ -74,15 +74,16 @@
         <p class="mb-5">Take a look at my recent work.</p>
 
         <div class="mb-4">
-            <label for="toolFilter" class="form-label">Filter by tool:</label>
+            <label for="toolFilter" class="form-label">Filter by area:</label>
             <select id="toolFilter" class="form-select">
                 <option value="all">All</option>
-                <option value="Python">Python</option>
-                <option value="Power BI">Power BI</option>
-                <option value="SQL">SQL</option>
-                <option value="MongoDB">MongoDB</option>
+                <option value="Data Science">Data Science</option>
+                <option value="Machine Learning">Machine Learning</option>
+                <option value="AI">AI</option>
+                <option value="Business Intelligence">Business Intelligence</option>
             </select>
         </div>
+
 
         <div id="github-projects" class="row"></div>
         <div class="text-center mt-4">
@@ -164,7 +165,7 @@
                         const files = await fetch(projectUrl).then(res => res.json());
         
                         const readmeFile = files.find(f => f.name.toLowerCase() === "readme.md");
-                        const toolsFile = files.find(f => f.name.toLowerCase() === "tools.txt");
+                        const toolsFile = files.find(f => f.name.toLowerCase() === "category.txt");
                         const imageFile = files.find(f => f.name.toLowerCase().includes("cover"));
         
                         const readmeText = readmeFile
@@ -207,17 +208,38 @@
             }
         
             function renderProjects(filter) {
-                container.innerHTML = "";
-        
-                const filtered = filter === "all"
-                    ? allProjects
-                    : allProjects.filter(p => p.tools.includes(filter));
-        
-                if (filtered.length === 0) {
-                    container.innerHTML = "<p>No projects match this filter.</p>";
-                    return;
-                }
-        
+    container.innerHTML = "";
+
+    const filtered = filter === "all"
+        ? allProjects
+        : allProjects.filter(p => p.areas.includes(filter)); // Alterando de "tools" para "areas"
+
+    if (filtered.length === 0) {
+        container.innerHTML = "<p>No projects match this filter.</p>";
+        return;
+    }
+
+    filtered.slice(0, 3).forEach(project => {
+        const linkUrl = project.fileUrl ? project.fileUrl : project.url;
+
+        const card = `
+            <div class="col-md-4 mb-4">
+                <a href="${linkUrl}" target="_blank" class="text-decoration-none text-dark">
+                    <div class="card h-100 shadow-sm">
+                        <img src="${project.imageUrl}" class="card-img-top" alt="Cover image for ${project.name}">
+                        <div class="card-body">
+                            <small class="text-muted">${project.name}</small>
+                            <h5 class="card-title mt-2">${project.displayName}</h5>
+                            <p class="card-text">${project.readme}</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        `;
+        container.innerHTML += card;
+    });
+}
+
                 filtered.slice(0, 3).forEach(project => {
                     const linkUrl = project.fileUrl ? project.fileUrl : project.url;
         
