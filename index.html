@@ -87,6 +87,16 @@
                 <h2 class="mb-5">My Projects by Category</h2>
                 <p class="mb-5">Explore my work categorized by expertise area.</p>
                 <div id="categories-container" class="loading">Loading projects...</div>
+                <div class="mb-3 text-center">
+                    <label for="categoryFilter" class="form-label">Filter by area:</label>
+                    <select id="categoryFilter" class="form-select w-auto mx-auto">
+                        <option value="all">All</option>
+                        <option value="Data Analysis">Data Analysis</option>
+                        <option value="Business Intelligence">Business Intelligence</option>
+                        <option value="Machine Learning">Machine Learning</option>
+                        <option value="Deep Learning">Deep Learning</option>
+                    </select>
+                </div>
                 <div class="text-center mt-4">
                     <a href="https://github.com/Goldoni17" class="btn btn-primary" target="_blank">See More Projects</a>
                 </div>
@@ -149,132 +159,96 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        const username = "Goldoni17";
-        const repo = "projetos";
-        const baseUrl = `https://api.github.com/repos/${username}/${repo}/contents`;
-        const container = document.getElementById("categories-container");
-        const priorityExtensions = [".ipynb", ".sql", ".pbix", ".pdf", ".html"];
-        const categoryOrder = [
-            "Data Analysis",
-            "Business Intelligence",
-            "Machine Learning",
-            "Deep Learning"
-        ];
+    const username = "Goldoni17";
+    const repo = "projetos";
+    const baseUrl = `https://api.github.com/repos/${username}/${repo}/contents`;
+    const container = document.getElementById("categories-container");
+    const priorityExtensions = [".ipynb", ".sql", ".pbix", ".pdf", ".html"];
+    const categoryOrder = [
+        "Data Analysis",
+        "Business Intelligence",
+        "Machine Learning",
+        "Deep Learning"
+    ];
 
-        // Configuração da API
-        const headers = {
-            Accept: "application/vnd.github.v3+json",
-            Authorization: "" // Adicione um token pessoal se necessário
-        };
+    const headers = {
+        Accept: "application/vnd.github.v3+json"
+    };
 
-        async function getProjects() {
-            try {
-                container.innerHTML = '<div class="loading">Loading projects...</div>';
-                
-                // Buscar lista de projetos
-                const response = await fetch(baseUrl, { headers });
-                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-                
-                const folders = await response.json();
-                const projectFolders = folders.filter(item => item.type === "dir");
-                
-                // Processar cada projeto
-                allProjects = await Promise.all(projectFolders.map(async folder => {
-                    try {
-                        const projectUrl = `${baseUrl}/${folder.name}`;
-                        const filesResponse = await fetch(projectUrl, { headers });
-                        if (!filesResponse.ok) return null;
-                        
-                        const files = await filesResponse.json();
-                        
-                        // Obter metadados
-                        const readmeFile = files.find(f => f.name.toLowerCase() === "readme.md");
-                        const categoryFile = files.find(f => f.name.toLowerCase() === "category.txt");
-                        const dateFile = files.find(f => f.name.toLowerCase() === "date.txt");
-                        const imageFile = files.find(f => f.name.toLowerCase().includes("cover"));
+    let allProjects = [];
 
-                        // Processar conteúdo
-                        const [readme, category, date] = await Promise.all([
-                            readmeFile ? fetch(readmeFile.download_url).then(r => r.text()) : "",
-                            categoryFile ? fetch(categoryFile.download_url).then(r => r.text().trim()) : "Other",
-                            dateFile ? fetch(dateFile.download_url).then(r => new Date(r.text())) : new Date(folder.created_at)
-                        ]);
+    async function getProjects() {
+        try {
+            container.innerHTML = '<div class="loading">Loading projects...</div>';
+            const response = await fetch(baseUrl, { headers });
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
-                        // Validar e formatar data
-                        const validDate = date instanceof Date && !isNaN(date) ? date : new Date();
+            const folders = await response.json();
+            const projectFolders = folders.filter(item => item.type === "dir");
 
-                        // Encontrar arquivo principal
-                        const mainFile = files.find(f => priorityExtensions.some(ext => f.name.endsWith(ext)));
-                        
-                        return {
-                            name: folder.name,
-                            displayName: folder.name.replace(/[-_]/g, ' '),
-                            readme: readme || "No description available",
-                            category: category,
-                            date: validDate,
-                            imageUrl: imageFile?.download_url || "https://cdn-icons-png.flaticon.com/512/2721/2721298.png",
-                            url: mainFile ? `https://github.com/${username}/${repo}/blob/main/${folder.name}/${mainFile.name}` 
-                                       : `https://github.com/${username}/${repo}/tree/main/${folder.name}`
-                        };
-                    } catch (error) {
-                        console.error(`Error processing ${folder.name}:`, error);
-                        return null;
-                    }
-                }));
+            allProjects = await Promise.all(projectFolders.map(async folder => {
+                const details = await fetch(`${baseUrl}/${folder.name}`, { headers });
+                const files = await details.json();
 
-                // Filtrar projetos válidos e renderizar
-                renderProjectsByCategory(allProjects.filter(p => p !== null));
-            } catch (error) {
-                console.error("Failed to load projects:", error);
-                container.innerHTML = `<div class="error-message">Error loading projects: ${error.message}</div>`;
-            }
+                const hasPreview = files.some(file => priorityExtensions.some(ext => file.name.endsWith(ext)));
+                const category = folder.name.includes("BI") ? "Business Intelligence" : folder.name.includes("ML") ? "Machine Learning" : folder.name.includes("DL") ? "Deep Learning" : "Data Analysis";
+                const timestamp = new Date(folder.git_url ? folder.git_url.split('/').pop() : Date.now());
+
+                return {
+                    name: folder.name,
+                    url: `https://github.com/${username}/${repo}/tree/main/${folder.name}`,
+                    category,
+                    hasPreview,
+                    timestamp
+                };
+            }));
+
+            renderCategories("all");
+        } catch (error) {
+            container.innerHTML = `<div class="error-message">Error loading projects: ${error.message}</div>`;
+        }
+    }
+
+    function renderCategories(selectedCategory) {
+        let projectsToShow = allProjects;
+
+        if (selectedCategory !== "all") {
+            projectsToShow = allProjects.filter(project => project.category === selectedCategory);
         }
 
-        function renderProjectsByCategory(projects) {
-            container.innerHTML = "";
-            
-            // Agrupar por categoria
-            const categorized = projects.reduce((acc, project) => {
-                acc[project.category] = acc[project.category] || [];
-                acc[project.category].push(project);
-                return acc;
-            }, {});
+        projectsToShow.sort((a, b) => b.timestamp - a.timestamp);
+        const topThree = projectsToShow.slice(0, 3);
 
-            // Ordenar e exibir
-            categoryOrder.forEach(category => {
-                const projectsInCategory = categorized[category];
-                if (!projectsInCategory) return;
+        if (topThree.length === 0) {
+            container.innerHTML = '<div class="loading">No projects found.</div>';
+            return;
+        }
 
-                const sortedProjects = projectsInCategory
-                    .sort((a, b) => b.date - a.date)
-                    .slice(0, 3);
-
-                const categoryHTML = `
-                    <div class="mb-5">
-                        <h3 class="mb-3">${category}</h3>
-                        <div class="row">
-                            ${sortedProjects.map(project => `
-                                <div class="col-md-4 mb-4">
-                                    <a href="${project.url}" target="_blank" class="text-decoration-none text-dark">
-                                        <div class="card h-100 shadow-sm">
-                                            <img src="${project.imageUrl}" class="card-img-top" alt="${project.name}" loading="lazy">
-                                            <div class="card-body">
-                                                <h5 class="card-title">${project.displayName}</h5>
-                                                <p class="card-text">${project.readme.substring(0, 120)}...</p>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </div>
-                            `).join('')}
+        container.innerHTML = `
+            <div class="mb-3">
+                <label for="category-select" class="form-label">Filter by area:</label>
+                <select id="category-select" class="form-select">
+                    <option value="all">All</option>
+                    ${categoryOrder.map(cat => `<option value="${cat}">${cat}</option>`).join('')}
+                </select>
+            </div>
+            <div class="row">
+                ${topThree.map(project => `
+                    <div class="col-md-4 mb-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">${project.name}</h5>
+                                <p class="card-text">${project.category}</p>
+                                <a href="${project.url}" class="btn btn-primary" target="_blank">View Project</a>
+                            </div>
                         </div>
                     </div>
-                `;
-                container.innerHTML += categoryHTML;
-            });
-        }
+                `).join('')}
+            </div>
+        `;
 
-        // Iniciar carregamento
-        getProjects();
-    </script>
-</body>
-</html>
+        document.getElementById("category-select").addEventListener("change", e => renderCategories(e.target.value));
+    }
+
+    getProjects();
+</script>
