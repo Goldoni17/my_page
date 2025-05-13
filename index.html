@@ -141,131 +141,123 @@
                   </div>
               </section>
           </div>
-          <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-          <script src="js/scripts.js"></script>
-         <script>
-            const username = "Goldoni17";
-            const repo = "projetos";
-            const baseUrl = `https://api.github.com/repos/${username}/${repo}/contents`;
-            const container = document.getElementById("github-projects");
-            const filterSelect = document.getElementById("toolFilter");
-        
-            const priorityExtensions = [".ipynb", ".sql", ".pbix", ".pdf", ".html"];
-        
-            let allProjects = [];
-        
-            async function getProjects() {
-                try {
-                    const response = await fetch(baseUrl);
-                    const folders = await response.json();
-                    const projectFolders = folders.filter(item => item.type === "dir");
-        
-                    for (const folder of projectFolders) {
-                        const projectUrl = `${baseUrl}/${folder.name}`;
-                        const files = await fetch(projectUrl).then(res => res.json());
-        
-                        const readmeFile = files.find(f => f.name.toLowerCase() === "readme.md");
-                        const toolsFile = files.find(f => f.name.toLowerCase() === "category.txt");
-                        const imageFile = files.find(f => f.name.toLowerCase().includes("cover"));
-        
-                        const readmeText = readmeFile
-                            ? await fetch(readmeFile.download_url).then(res => res.text())
-                            : "No description available.";
-        
-                        const toolsText = toolsFile
-                            ? await fetch(toolsFile.download_url).then(res => res.text())
-                            : "";
-        
-                        const imageUrl = imageFile
-                            ? imageFile.download_url
-                            : "https://cdn-icons-png.flaticon.com/512/2721/2721298.png";
-        
-                        let projectFileUrl = null;
-                        for (const ext of priorityExtensions) {
-                            const file = files.find(f => f.name.toLowerCase().endsWith(ext));
-                            if (file) {
-                                projectFileUrl = `https://github.com/${username}/${repo}/blob/main/${folder.name}/${file.name}`;
-                                break;
-                            }
+          <script>
+        const username = "Goldoni17"; // Substitua pelo seu nome de usuário do GitHub
+        const repo = "projetos"; // Substitua pelo seu repositório
+        const baseUrl = `https://api.github.com/repos/${username}/${repo}/contents`;
+        const container = document.getElementById("github-projects");
+        const filterSelect = document.getElementById("categoryFilter");
+
+        const priorityExtensions = [".ipynb", ".sql", ".pbix", ".pdf", ".html"];
+
+        let allProjects = [];
+
+        async function getProjects() {
+            try {
+                const response = await fetch(baseUrl);
+                const folders = await response.json();
+                const projectFolders = folders.filter(item => item.type === "dir");
+
+                const categories = new Set(); // Usado para garantir categorias únicas
+
+                for (const folder of projectFolders) {
+                    const projectUrl = `${baseUrl}/${folder.name}`;
+                    const files = await fetch(projectUrl).then(res => res.json());
+
+                    const readmeFile = files.find(f => f.name.toLowerCase() === "readme.md");
+                    const categoryFile = files.find(f => f.name.toLowerCase() === "category.txt");
+                    const imageFile = files.find(f => f.name.toLowerCase().includes("cover"));
+
+                    const readmeText = readmeFile
+                        ? await fetch(readmeFile.download_url).then(res => res.text())
+                        : "No description available.";
+
+                    const categoryText = categoryFile
+                        ? await fetch(categoryFile.download_url).then(res => res.text())
+                        : ""; // Caso não haja categoria, tratamos como vazio
+
+                    const imageUrl = imageFile
+                        ? imageFile.download_url
+                        : "https://cdn-icons-png.flaticon.com/512/2721/2721298.png"; // Imagem padrão
+
+                    let projectFileUrl = null;
+                    for (const ext of priorityExtensions) {
+                        const file = files.find(f => f.name.toLowerCase().endsWith(ext));
+                        if (file) {
+                            projectFileUrl = `https://github.com/${username}/${repo}/blob/main/${folder.name}/${file.name}`;
+                            break;
                         }
-        
-                        allProjects.push({
-                            name: folder.name,
-                            displayName: folder.name.replace(/[-_]/g, ' '),
-                            readme: readmeText,
-                            tools: toolsText.split(',').map(tool => tool.trim()),
-                            imageUrl: imageUrl,
-                            url: `https://github.com/${username}/${repo}/tree/main/${folder.name}`,
-                            fileUrl: projectFileUrl
-                        });
                     }
-        
-                    renderProjects("all");
-                } catch (error) {
-                    console.error("Erro ao carregar projetos:", error);
-                    container.innerHTML = "<p>Erro ao carregar os projetos.</p>";
+
+                    allProjects.push({
+                        name: folder.name,
+                        displayName: folder.name.replace(/[-_]/g, ' '),
+                        readme: readmeText,
+                        categories: categoryText.split(',').map(category => category.trim()), // Usamos a lista de categorias
+                        imageUrl: imageUrl,
+                        url: `https://github.com/${username}/${repo}/tree/main/${folder.name}`,
+                        fileUrl: projectFileUrl
+                    });
+
+                    // Adiciona as categorias ao Set
+                    categoryText.split(',').forEach(category => categories.add(category.trim()));
                 }
-            }
-        
-            function renderProjects(filter) {
-    container.innerHTML = "";
 
-    const filtered = filter === "all"
-        ? allProjects
-        : allProjects.filter(p => p.areas.includes(filter)); // Alterando de "tools" para "areas"
-
-    if (filtered.length === 0) {
-        container.innerHTML = "<p>No projects match this filter.</p>";
-        return;
-    }
-
-    filtered.slice(0, 3).forEach(project => {
-        const linkUrl = project.fileUrl ? project.fileUrl : project.url;
-
-        const card = `
-            <div class="col-md-4 mb-4">
-                <a href="${linkUrl}" target="_blank" class="text-decoration-none text-dark">
-                    <div class="card h-100 shadow-sm">
-                        <img src="${project.imageUrl}" class="card-img-top" alt="Cover image for ${project.name}">
-                        <div class="card-body">
-                            <small class="text-muted">${project.name}</small>
-                            <h5 class="card-title mt-2">${project.displayName}</h5>
-                            <p class="card-text">${project.readme}</p>
-                        </div>
-                    </div>
-                </a>
-            </div>
-        `;
-        container.innerHTML += card;
-    });
-}
-
-                filtered.slice(0, 3).forEach(project => {
-                    const linkUrl = project.fileUrl ? project.fileUrl : project.url;
-        
-                    const card = `
-                        <div class="col-md-4 mb-4">
-                            <a href="${linkUrl}" target="_blank" class="text-decoration-none text-dark">
-                                <div class="card h-100 shadow-sm">
-                                    <img src="${project.imageUrl}" class="card-img-top" alt="Cover image for ${project.name}">
-                                    <div class="card-body">
-                                        <small class="text-muted">${project.name}</small>
-                                        <h5 class="card-title mt-2">${project.displayName}</h5>
-                                        <p class="card-text">${project.readme}</p>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                    `;
-                    container.innerHTML += card;
+                // Preenche o filtro com as categorias únicas
+                categories.forEach(category => {
+                    const option = document.createElement("option");
+                    option.value = category;
+                    option.textContent = category;
+                    filterSelect.appendChild(option);
                 });
+
+                renderProjects("all"); // Exibe todos os projetos inicialmente
+            } catch (error) {
+                console.error("Erro ao carregar projetos:", error);
+                container.innerHTML = "<p>Erro ao carregar os projetos.</p>";
             }
-        
-            filterSelect.addEventListener("change", () => {
-                renderProjects(filterSelect.value);
+        }
+
+        function renderProjects(filter) {
+            container.innerHTML = ""; // Limpa os projetos existentes
+
+            const filtered = filter === "all"
+                ? allProjects
+                : allProjects.filter(p => p.categories.includes(filter)); // Filtra pela categoria
+
+            if (filtered.length === 0) {
+                container.innerHTML = "<p>No projects match this filter.</p>";
+                return;
+            }
+
+            filtered.slice(0, 3).forEach(project => {
+                const linkUrl = project.fileUrl ? project.fileUrl : project.url;
+
+                const card = `
+                    <div class="col-md-4 mb-4">
+                        <a href="${linkUrl}" target="_blank" class="text-decoration-none text-dark">
+                            <div class="card h-100 shadow-sm">
+                                <img src="${project.imageUrl}" class="card-img-top" alt="Cover image for ${project.name}">
+                                <div class="card-body">
+                                    <small class="text-muted">${project.name}</small>
+                                    <h5 class="card-title mt-2">${project.displayName}</h5>
+                                    <p class="card-text">${project.readme}</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                `;
+                container.innerHTML += card;
             });
-        
-            getProjects();
-        </script>
-        </body>
-        </html>
+        }
+
+        filterSelect.addEventListener("change", () => {
+            renderProjects(filterSelect.value); // Filtra os projetos quando a categoria for alterada
+        });
+
+        getProjects(); // Carrega os projetos quando a página for carregada
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
