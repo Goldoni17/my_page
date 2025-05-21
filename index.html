@@ -152,99 +152,89 @@
     const container = document.getElementById("github-projects");
     const filterSelect = document.getElementById("categoryFilter");
 
-    const priorityExtensions = [".ipynb", ".sql", ".pbix", ".pdf", ".html"];
+    const priorityExtensions = [".ipynb", ".sql", ".pbix", ".pdf", ".csv", ".xlsx", ".py"];
 
-    let allProjects = [];
-
-    async function getProjects() {
-        try {
-            const response = await fetch(baseUrl);
-            const folders = await response.json();
-            const projectFolders = folders.filter(item => item.type === "dir");
-
-            for (const folder of projectFolders) {
-                const projectUrl = `${baseUrl}/${folder.name}`;
-                const files = await fetch(projectUrl).then(res => res.json());
-
-                const readmeFile = files.find(f => f.name.toLowerCase() === "readme.md");
-                const categoryFile = files.find(f => f.name.toLowerCase() === "category.txt");
-                const imageFile = files.find(f => f.name.toLowerCase().includes("cover"));
-
-                const readmeText = readmeFile
-                    ? await fetch(readmeFile.download_url).then(res => res.text())
-                    : "No description available.";
-
-                const categoryText = categoryFile
-                    ? await fetch(categoryFile.download_url).then(res => res.text())
-                    : "";
-
-                const imageUrl = imageFile
-                    ? imageFile.download_url
-                    : "https://cdn-icons-png.flaticon.com/512/2721/2721298.png";
-
-                let projectFileUrl = null;
-                for (const ext of priorityExtensions) {
-                    const file = files.find(f => f.name.toLowerCase().endsWith(ext));
-                    if (file) {
-                        projectFileUrl = `https://github.com/${username}/${repo}/blob/main/${folder.name}/${file.name}`;
-                        break;
-                    }
-                }
-
-                allProjects.push({
-                    name: folder.name,
-                    displayName: folder.name.replace(/[-_]/g, ' '),
-                    readme: readmeText,
-                    categories: categoryText.split(',').map(cat => cat.trim()),
-                    imageUrl: imageUrl,
-                    url: `https://github.com/${username}/${repo}/tree/main/${folder.name}`,
-                    fileUrl: projectFileUrl
-                });
-            }
-
-            renderProjects("all");
-        } catch (error) {
-            console.error("Erro ao carregar projetos:", error);
-            container.innerHTML = "<p>Erro ao carregar os projetos.</p>";
-        }
+    async function fetchJSON(url) {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error(`Erro ao buscar: ${url}`);
+        return response.json();
     }
 
-    function renderProjects(filter) {
+    async function getProjects() {
+        const contents = await fetchJSON(baseUrl);
+
+        // Filtra apenas diretórios (que são os projetos)
+        const projectDirs = contents.filter(item => item.type === "dir");
+
+        const projects = await Promise.all(projectDirs.map(async (project) => {
+            try {
+                const projectContent = await fetchJSON(`${baseUrl}/${project.name}`);
+
+                // Busca o arquivo date.txt
+                const dateFile = projectContent.find(file => file.name === "date.txt");
+
+                let date = "1970-01-01";  // Valor padrão caso não ache o date.txt
+
+                if (dateFile) {
+                    const rawDate = await fetch(dateFile.download_url).then(res => res.text());
+                    date = rawDate.trim();
+                }
+
+                return {
+                    name: project.name,
+                    url: `https://github.com/${username}/${repo}/tree/main/${project.name}`,
+                    date: date
+                };
+            } catch (err) {
+                console.error(`Erro ao processar projeto ${project.name}:`, err);
+                return null;
+            }
+        }));
+
+        return projects.filter(p => p !== null);
+    }
+
+    function renderProjects(projects) {
         container.innerHTML = "";
 
-        const filtered = filter === "all"
-            ? allProjects
-            : allProjects.filter(p => p.categories.includes(filter));
+        projects.forEach(project => {
+            const col = document.createElement("div");
+            col.className = "col-md-4 mb-4";
 
-        if (filtered.length === 0) {
-            container.innerHTML = "<p>No projects match this filter.</p>";
-            return;
-        }
-
-        filtered.slice(0, 3).forEach(project => {
-            const linkUrl = project.fileUrl ? project.fileUrl : project.url;
-
-            const card = `
-                <div class="col-md-4 mb-4">
-                    <a href="${linkUrl}" target="_blank" class="text-decoration-none text-dark">
-                        <div class="card h-100 shadow-sm">
-                            <img src="${project.imageUrl}" class="card-img-top" alt="Cover image for ${project.name}">
-                            <div class="card-body">
-                                <small class="text-muted">${project.name}</small>
-                                <h5 class="card-title mt-2">${project.displayName}</h5>
-                                <p class="card-text">${project.readme}</p>
-                            </div>
-                        </div>
-                    </a>
+            col.innerHTML = `
+                <div class="card h-100">
+                    <img src="https://raw.githubusercontent.com/${username}/${repo}/main/${project.name}/thumbnail.png" class="card-img-top" alt="${project.name}">
+                    <div class="card-body">
+                        <h5 class="card-title">${project.name}</h5>
+                        <p class="card-text">Date: ${project.date}</p>
+                        <a href="${project.url}" target="_blank" class="btn btn-primary">View on GitHub</a>
+                    </div>
                 </div>
             `;
-            container.innerHTML += card;
+
+            container.appendChild(col);
         });
     }
 
-    filterSelect.addEventListener("change", () => {
-        renderProjects(filterSelect.value);
-    });
+    function filterProjects(projects, category) {
+        if (category === "all") return projects;
+        return projects.filter(project => project.name.toLowerCase().includes(category.toLowerCase()));
+    }
 
-    getProjects();
+    async function init() {
+        let projects = await getProjects();
+
+        // Ordenar por data decrescente (mais recentes primeiro)
+        projects.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+        renderProjects(projects);
+
+        filterSelect.addEventListener("change", () => {
+            const filtered = filterProjects(projects, filterSelect.value);
+            renderProjects(filtered);
+        });
+    }
+
+    init();
 </script>
+
