@@ -152,89 +152,75 @@
     const container = document.getElementById("github-projects");
     const filterSelect = document.getElementById("categoryFilter");
 
-    const priorityExtensions = [".ipynb", ".sql", ".pbix", ".pdf", ".csv", ".xlsx", ".py"];
+    let allProjects = [];
 
-    async function fetchJSON(url) {
+    async function fetchDateTxt(url) {
         const response = await fetch(url);
-        if (!response.ok) throw new Error(`Erro ao buscar: ${url}`);
-        return response.json();
+        const data = await response.json();
+        const content = atob(data.content);
+        return new Date(content.trim());
     }
 
-    async function getProjects() {
-        const contents = await fetchJSON(baseUrl);
+    async function fetchProjects() {
+        const response = await fetch(baseUrl);
+        const data = await response.json();
 
-        // Filtra apenas diretórios (que são os projetos)
-        const projectDirs = contents.filter(item => item.type === "dir");
+        const projects = await Promise.all(
+            data.filter(item => item.type === "dir").map(async project => {
+                const projectUrl = `${baseUrl}/${project.name}`;
+                const filesResponse = await fetch(projectUrl);
+                const files = await filesResponse.json();
 
-        const projects = await Promise.all(projectDirs.map(async (project) => {
-            try {
-                const projectContent = await fetchJSON(`${baseUrl}/${project.name}`);
-
-                // Busca o arquivo date.txt
-                const dateFile = projectContent.find(file => file.name === "date.txt");
-
-                let date = "1970-01-01";  // Valor padrão caso não ache o date.txt
+                const dateFile = files.find(f => f.name === "date.txt");
+                let date = new Date(0);  // default to epoch if not found
 
                 if (dateFile) {
-                    const rawDate = await fetch(dateFile.download_url).then(res => res.text());
-                    date = rawDate.trim();
+                    date = await fetchDateTxt(dateFile.url);
                 }
 
+                // Pega a descrição, categoria, etc. Se quiser.
                 return {
                     name: project.name,
                     url: `https://github.com/${username}/${repo}/tree/main/${project.name}`,
                     date: date
                 };
-            } catch (err) {
-                console.error(`Erro ao processar projeto ${project.name}:`, err);
-                return null;
-            }
-        }));
+            })
+        );
 
-        return projects.filter(p => p !== null);
+        allProjects = projects.sort((a, b) => b.date - a.date);
+        renderProjects(allProjects);
     }
 
     function renderProjects(projects) {
         container.innerHTML = "";
 
-        projects.forEach(project => {
+        const selectedCategory = filterSelect.value;
+
+        const filtered = selectedCategory === "all"
+            ? projects
+            : projects.filter(p => p.category === selectedCategory);  // Só funciona se categoria estiver incluída no fetch.
+
+        const visibleProjects = filtered.slice(0, 3);
+
+        visibleProjects.forEach(project => {
             const col = document.createElement("div");
             col.className = "col-md-4 mb-4";
 
             col.innerHTML = `
-                <div class="card h-100">
-                    <img src="https://raw.githubusercontent.com/${username}/${repo}/main/${project.name}/thumbnail.png" class="card-img-top" alt="${project.name}">
+                <div class="card">
+                    <img src="https://via.placeholder.com/300x175.png?text=${project.name}" class="card-img-top" alt="${project.name}">
                     <div class="card-body">
                         <h5 class="card-title">${project.name}</h5>
-                        <p class="card-text">Date: ${project.date}</p>
-                        <a href="${project.url}" target="_blank" class="btn btn-primary">View on GitHub</a>
+                        <p class="card-text">Published on: ${project.date.toLocaleDateString()}</p>
+                        <a href="${project.url}" class="btn btn-primary" target="_blank">View Project</a>
                     </div>
                 </div>
             `;
-
             container.appendChild(col);
         });
     }
 
-    function filterProjects(projects, category) {
-        if (category === "all") return projects;
-        return projects.filter(project => project.name.toLowerCase().includes(category.toLowerCase()));
-    }
+    filterSelect.addEventListener("change", () => renderProjects(allProjects));
 
-    async function init() {
-        let projects = await getProjects();
-
-        // Ordenar por data decrescente (mais recentes primeiro)
-        projects.sort((a, b) => new Date(b.date) - new Date(a.date));
-
-        renderProjects(projects);
-
-        filterSelect.addEventListener("change", () => {
-            const filtered = filterProjects(projects, filterSelect.value);
-            renderProjects(filtered);
-        });
-    }
-
-    init();
+    fetchProjects();
 </script>
-
