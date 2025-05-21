@@ -11,6 +11,35 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
         <link href="css/styles.css" rel="stylesheet" />
         <style>
+
+        .card {
+            height: 450px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-img-top {
+            height: 175px;
+            object-fit: cover;
+        }
+
+        .card-body {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-text {
+            flex-grow: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
             html {
                 scroll-behavior: smooth;
             }
@@ -143,6 +172,7 @@
                   </div>
               </section>
           </div>
+            
           <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="js/scripts.js"></script>
 <script>
