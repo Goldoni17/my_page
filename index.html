@@ -11,46 +11,27 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
         <link href="css/styles.css" rel="stylesheet" />
         <style>
+    .card {
+        height: 450px;
+        display: flex;
+        flex-direction: column;
+    }
 
-        .card {
-            height: 450px;
-            display: flex;
-            flex-direction: column;
-        }
+    .card-img-top {
+        height: 175px;
+        object-fit: cover;
+    }
 
-        .card-img-top {
-            height: 175px;
-            object-fit: cover;
-        }
+    .card-body {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+    }
 
-        .card-body {
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .card-title {
-            font-size: 1.25rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .card-text {
-            flex-grow: 1;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-            html {
-                scroll-behavior: smooth;
-            }
-    
-            .card-img-top {
-                width: 100%;
-                height: 175px;
-                object-fit: cover;
-                object-position: center;
-            }
-        </style>
+    .btn {
+        margin-top: auto;
+    }
+</style>
     </head>
     </head>
     <body id="page-top">
@@ -104,7 +85,7 @@
 
         <div class="mb-4">
             <label for="categoryFilter" class="form-label">Filter by category:</label>
-            <select id="categoryFilter" class="form-select">
+            <select id="categoryFilter" class="form-select w-auto">
                 <option value="all">All</option>
                 <option value="Data Analysis">Data Analysis</option>
                 <option value="Data Science">Data Science</option>
@@ -114,11 +95,10 @@
             </select>
         </div>
 
+        <div id="github-projects" class="row row-cols-1 row-cols-md-3 g-4"></div>
 
-
-        <div id="github-projects" class="row"></div>
         <div class="text-center mt-4">
-            <a href="https://github.com/Goldoni17" class="btn btn-primary" target="_blank">See More Projects</a>
+            <button id="seeMoreBtn" class="btn btn-secondary">See More Projects</button>
         </div>
     </div>
 </section>
@@ -181,30 +161,16 @@
     const baseUrl = `https://api.github.com/repos/${username}/${repo}/contents`;
     const container = document.getElementById("github-projects");
     const filterSelect = document.getElementById("categoryFilter");
+    const seeMoreBtn = document.getElementById("seeMoreBtn");
 
     let allProjects = [];
+    let visibleCount = 3;
 
     async function fetchDateTxt(url) {
         const response = await fetch(url);
         const data = await response.json();
         const content = atob(data.content);
         return new Date(content.trim());
-    }
-
-    async function fetchReadme(url) {
-        try {
-            const response = await fetch(url);
-            const data = await response.json();
-            if (data.content) {
-                const decodedContent = atob(data.content);
-                return decodedContent.slice(0, 200) + "...";  // Limita a 200 caracteres
-            } else {
-                return "No description available.";
-            }
-        } catch (error) {
-            console.error("Error fetching README:", error);
-            return "No description available.";
-        }
     }
 
     async function fetchProjects() {
@@ -218,23 +184,40 @@
                 const files = await filesResponse.json();
 
                 const dateFile = files.find(f => f.name === "date.txt");
-                let date = new Date(0);  // default to epoch if not found
+                const readmeFile = files.find(f => f.name.toLowerCase() === "readme.md");
+
+                let date = new Date(0);
+                let description = "";
+                let coverImage = "";
+                let notebookUrl = `https://github.com/${username}/${repo}/tree/main/${project.name}`;
 
                 if (dateFile) {
                     date = await fetchDateTxt(dateFile.url);
                 }
 
-                const readmeFile = files.find(f => f.name.toLowerCase() === "readme.md");
-                let description = "No description available.";
                 if (readmeFile) {
-                    description = await fetchReadme(readmeFile.url);
+                    const readmeResponse = await fetch(readmeFile.download_url);
+                    description = await readmeResponse.text();
+                }
+
+                const cover = files.find(f => f.name === "cover.png" || f.name === "cover.jpg");
+                if (cover) {
+                    coverImage = cover.download_url;
+                } else {
+                    coverImage = `https://via.placeholder.com/300x175.png?text=${project.name}`;
+                }
+
+                const notebook = files.find(f => f.name.endsWith(".ipynb"));
+                if (notebook) {
+                    notebookUrl = `https://nbviewer.org/url/raw.githubusercontent.com/${username}/${repo}/main/${project.name}/${notebook.name}`;
                 }
 
                 return {
                     name: project.name,
-                    url: `https://github.com/${username}/${repo}/tree/main/${project.name}`,
+                    url: notebookUrl,
                     date: date,
-                    description: description
+                    description: description,
+                    coverImage: coverImage
                 };
             })
         );
@@ -250,9 +233,9 @@
 
         const filtered = selectedCategory === "all"
             ? projects
-            : projects.filter(p => p.category === selectedCategory);  // Só funciona se categoria estiver incluída no fetch.
+            : projects.filter(p => p.category === selectedCategory);
 
-        const visibleProjects = filtered.slice(0, 3);
+        const visibleProjects = filtered.slice(0, visibleCount);
 
         visibleProjects.forEach(project => {
             const col = document.createElement("div");
@@ -260,7 +243,7 @@
 
             col.innerHTML = `
                 <div class="card">
-                    <img src="https://via.placeholder.com/300x175.png?text=${project.name}" class="card-img-top" alt="${project.name}">
+                    <img src="${project.coverImage}" class="card-img-top" alt="${project.name}">
                     <div class="card-body">
                         <h5 class="card-title">${project.name}</h5>
                         <p class="card-text">${project.description}</p>
@@ -271,9 +254,23 @@
             `;
             container.appendChild(col);
         });
+
+        if (visibleCount >= filtered.length) {
+            seeMoreBtn.style.display = 'none';
+        } else {
+            seeMoreBtn.style.display = 'block';
+        }
     }
 
-    filterSelect.addEventListener("change", () => renderProjects(allProjects));
+    filterSelect.addEventListener("change", () => {
+        visibleCount = 3;
+        renderProjects(allProjects);
+    });
+
+    seeMoreBtn.addEventListener("click", () => {
+        visibleCount += 3;
+        renderProjects(allProjects);
+    });
 
     fetchProjects();
 </script>
