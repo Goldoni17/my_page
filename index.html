@@ -100,7 +100,7 @@
         <div id="github-projects" class="row"></div>
 
         <div class="text-center mt-4">
-            <a href="https://github.com/Goldoni17" class="btn btn-primary" target="_blank">See More Projects</a>
+    <button id="seeMoreBtn" class="btn btn-secondary">See More Projects</button>
         </div>
     </div>
 </section>
@@ -163,14 +163,15 @@
     const baseUrl = `https://api.github.com/repos/${username}/${repo}/contents`;
     const container = document.getElementById("github-projects");
     const filterSelect = document.getElementById("categoryFilter");
+    const seeMoreBtn = document.getElementById("seeMoreBtn");
 
     let allProjects = [];
-    let categories = new Set();
+    let projectsToShow = 3;
 
     async function fetchFileContent(url) {
         const response = await fetch(url);
         const data = await response.json();
-        return atob(data.content);
+        return atob(data.content).trim();
     }
 
     async function fetchProjects() {
@@ -183,80 +184,67 @@
                 const filesResponse = await fetch(projectUrl);
                 const files = await filesResponse.json();
 
-                // DATE
-                const dateFile = files.find(f => f.name.toLowerCase() === "date.txt");
+                const dateFile = files.find(f => f.name === "date.txt");
+                const categoryFile = files.find(f => f.name === "category.txt");
+                const readmeFile = files.find(f => f.name.toLowerCase() === "readme.md");
+                const notebookFile = files.find(f => f.name.endsWith(".ipynb"));
+
                 let date = new Date(0);
                 if (dateFile) {
                     const dateContent = await fetchFileContent(dateFile.url);
-                    date = new Date(dateContent.trim());
+                    date = new Date(dateContent);
                 }
 
-                // CATEGORY
-                const categoryFile = files.find(f => f.name.toLowerCase() === "category.txt");
                 let category = "Uncategorized";
                 if (categoryFile) {
-                    const categoryContent = await fetchFileContent(categoryFile.url);
-                    category = categoryContent.trim();
-                    categories.add(category);
+                    category = await fetchFileContent(categoryFile.url);
                 }
 
-                // DESCRIPTION
-                const readmeFile = files.find(f => f.name.toLowerCase() === "readme.md");
                 let description = "";
                 if (readmeFile) {
                     description = await fetchFileContent(readmeFile.url);
-                    description = description.split('\n')[0]; // só a primeira linha
+                    description = description.split('\n')[0];  // Pega só a primeira linha.
                 }
 
-                // COVER IMAGE
-                let imageUrl = `https://via.placeholder.com/300x175.png?text=${project.name}`;
-                const coverFile = files.find(f => f.name.toLowerCase() === "cover.png" || f.name.toLowerCase() === "cover.jpg");
-                if (coverFile) {
-                    imageUrl = `https://raw.githubusercontent.com/${username}/${repo}/main/${project.name}/${coverFile.name}`;
+                let image = `https://via.placeholder.com/300x175.png?text=${project.name}`;
+                const hasCoverPng = files.find(f => f.name.toLowerCase() === "cover.png");
+                const hasCoverJpg = files.find(f => f.name.toLowerCase() === "cover.jpg");
+
+                if (hasCoverPng) {
+                    image = `https://raw.githubusercontent.com/${username}/${repo}/main/${project.name}/cover.png`;
+                } else if (hasCoverJpg) {
+                    image = `https://raw.githubusercontent.com/${username}/${repo}/main/${project.name}/cover.jpg`;
                 }
 
-                // NOTEBOOK URL
-                const notebookFile = files.find(f => f.name.toLowerCase().endsWith(".ipynb"));
-                let notebookUrl = `https://github.com/${username}/${repo}/tree/main/${project.name}`;
+                let url = `https://github.com/${username}/${repo}/tree/main/${project.name}`;
                 if (notebookFile) {
-                    notebookUrl = `https://github.com/${username}/${repo}/blob/main/${project.name}/${notebookFile.name}`;
+                    url = `https://github.com/${username}/${repo}/blob/main/${project.name}/${notebookFile.name}`;
                 }
 
                 return {
                     name: project.name,
-                    url: notebookUrl,
-                    date: date,
-                    description: description,
-                    image: imageUrl,
-                    category: category
+                    url,
+                    date,
+                    category,
+                    description,
+                    image
                 };
             })
         );
 
         allProjects = projects.sort((a, b) => b.date - a.date);
-        populateCategoryFilter();
         renderProjects(allProjects);
-    }
-
-    function populateCategoryFilter() {
-        categories.forEach(category => {
-            const option = document.createElement("option");
-            option.value = category;
-            option.textContent = category;
-            filterSelect.appendChild(option);
-        });
     }
 
     function renderProjects(projects) {
         container.innerHTML = "";
 
         const selectedCategory = filterSelect.value;
-
         const filtered = selectedCategory === "all"
             ? projects
             : projects.filter(p => p.category === selectedCategory);
 
-        const visibleProjects = filtered.slice(0, 3);
+        const visibleProjects = filtered.slice(0, projectsToShow);
 
         visibleProjects.forEach(project => {
             const col = document.createElement("div");
@@ -275,9 +263,19 @@
             `;
             container.appendChild(col);
         });
+
+        seeMoreBtn.style.display = (projectsToShow >= filtered.length) ? "none" : "inline-block";
     }
 
-    filterSelect.addEventListener("change", () => renderProjects(allProjects));
+    filterSelect.addEventListener("change", () => {
+        projectsToShow = 3;
+        renderProjects(allProjects);
+    });
+
+    seeMoreBtn.addEventListener("click", () => {
+        projectsToShow += 3;
+        renderProjects(allProjects);
+    });
 
     fetchProjects();
 </script>
