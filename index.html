@@ -175,6 +175,14 @@
         return await response.json();
     }
 
+    async function fetchRawContent(url) {
+        const response = await fetch(url);
+        if (response.ok) {
+            return await response.text();
+        }
+        return null;
+    }
+
     async function loadProjects() {
         try {
             const response = await fetch(baseUrl);
@@ -182,31 +190,49 @@
 
             for (const file of files) {
                 if (file.type === "dir") {
-                    const categoryFileUrl = `https://raw.githubusercontent.com/${username}/${repo}/main/${file.name}/category.txt`;
+                    const projectFiles = await fetchDirectoryFiles(`${baseUrl}/${file.name}`);
 
+                    // Categoria
                     let category = "Uncategorized";
-                    try {
-                        const categoryResponse = await fetch(categoryFileUrl);
-                        if (categoryResponse.ok) {
-                            category = await categoryResponse.text();
+                    const categoryFile = projectFiles.find(f => f.name === "category.txt");
+                    if (categoryFile) {
+                        const categoryUrl = categoryFile.download_url;
+                        const categoryContent = await fetchRawContent(categoryUrl);
+                        if (categoryContent) {
+                            category = categoryContent.trim();
                         }
-                    } catch (err) {
-                        console.warn(`Category file not found for ${file.name}`);
                     }
 
-                    // Buscar arquivos da pasta
-                    const projectFiles = await fetchDirectoryFiles(`${baseUrl}/${file.name}`);
-                    const notebookFile = projectFiles.find(f => f.name.endsWith(".ipynb"));
+                    // Descrição
+                    let description = "No description available.";
+                    const readmeFile = projectFiles.find(f => f.name.toLowerCase() === "readme.md");
+                    if (readmeFile) {
+                        const readmeUrl = readmeFile.download_url;
+                        const readmeContent = await fetchRawContent(readmeUrl);
+                        if (readmeContent) {
+                            description = readmeContent.split('\n')[0]; // Primeira linha como resumo
+                        }
+                    }
 
+                    // Imagem de capa
+                    const coverFile = projectFiles.find(f => 
+                        f.name.toLowerCase() === "cover.jpg" || f.name.toLowerCase() === "cover.png"
+                    );
+                    const coverUrl = coverFile ? coverFile.download_url : null;
+
+                    // Notebook
+                    const notebookFile = projectFiles.find(f => f.name.endsWith(".ipynb"));
                     if (notebookFile) {
                         const notebookUrl = `https://nbviewer.org/github/${username}/${repo}/blob/main/${file.name}/${notebookFile.name}`;
 
-                        categories.add(category.trim());
+                        categories.add(category);
 
                         allProjects.push({
                             name: file.name,
                             url: notebookUrl,
-                            category: category.trim()
+                            category: category,
+                            description: description,
+                            coverUrl: coverUrl
                         });
                     }
                 }
@@ -248,6 +274,14 @@
             const card = document.createElement("div");
             card.className = "card h-100";
 
+            if (project.coverUrl) {
+                const img = document.createElement("img");
+                img.src = project.coverUrl;
+                img.className = "card-img-top";
+                img.alt = project.name;
+                card.appendChild(img);
+            }
+
             const cardBody = document.createElement("div");
             cardBody.className = "card-body d-flex flex-column";
 
@@ -257,7 +291,11 @@
 
             const description = document.createElement("p");
             description.className = "card-text";
-            description.textContent = `Category: ${project.category}`;
+            description.textContent = project.description;
+
+            const category = document.createElement("p");
+            category.className = "card-text text-muted";
+            category.textContent = `Category: ${project.category}`;
 
             const btn = document.createElement("a");
             btn.href = project.url;
@@ -267,6 +305,7 @@
 
             cardBody.appendChild(title);
             cardBody.appendChild(description);
+            cardBody.appendChild(category);
             cardBody.appendChild(btn);
 
             card.appendChild(cardBody);
@@ -279,7 +318,7 @@
         if (displayedCount >= filteredProjects.length) {
             seeMoreBtn.style.display = "none";
         } else {
-            seeMoreBtn.style.display = "block";
+            seeMoreBtn.style.display = "inline-block";
         }
     }
 
@@ -287,6 +326,5 @@
         displayProjects(filterSelect.value);
     });
 
-    // Initialize
     loadProjects();
 </script>
