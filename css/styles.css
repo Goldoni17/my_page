@@ -10970,3 +10970,13 @@ section.resume-section .resume-section-content {
     padding-bottom: 5rem;
   }
 }
+
+.card-body {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.project-category {
+    margin-top: auto;
+}
