@@ -84,7 +84,7 @@
                 </div>
             </section>
             <hr class="m-0" />
-            <!-- Project Section -->
+           <!-- Project Section -->
 <section class="resume-section" id="projects">
     <div class="resume-section-content">
         <h2 class="mb-5">My Latest Projects</h2>
@@ -100,7 +100,7 @@
         <div id="github-projects" class="row"></div>
 
         <div class="text-center mt-4">
-            <a href="https://github.com/Goldoni17" class="btn btn-primary" target="_blank">See More Projects</a>
+            <button id="seeMoreBtn" class="btn btn-secondary">See more projects</button>
         </div>
     </div>
 </section>
@@ -163,14 +163,16 @@
     const baseUrl = `https://api.github.com/repos/${username}/${repo}/contents`;
     const container = document.getElementById("github-projects");
     const filterSelect = document.getElementById("categoryFilter");
+    const seeMoreBtn = document.getElementById("seeMoreBtn");
 
     let allProjects = [];
     let categories = new Set();
+    let displayedCount = 0;
+    const batchSize = 3;
 
-    async function fetchFileContent(url) {
+    async function fetchDirectoryFiles(url) {
         const response = await fetch(url);
-        const data = await response.json();
-        return atob(data.content);
+        return await response.json();
     }
 
     async function loadProjects() {
@@ -180,7 +182,6 @@
 
             for (const file of files) {
                 if (file.type === "dir") {
-                    const readmeUrl = `https://raw.githubusercontent.com/${username}/${repo}/main/${file.name}/README.md`;
                     const categoryFileUrl = `https://raw.githubusercontent.com/${username}/${repo}/main/${file.name}/category.txt`;
 
                     let category = "Uncategorized";
@@ -193,14 +194,21 @@
                         console.warn(`Category file not found for ${file.name}`);
                     }
 
-                    categories.add(category.trim());
+                    // Buscar arquivos da pasta
+                    const projectFiles = await fetchDirectoryFiles(`${baseUrl}/${file.name}`);
+                    const notebookFile = projectFiles.find(f => f.name.endsWith(".ipynb"));
 
-                    allProjects.push({
-                        name: file.name,
-                        url: `https://github.com/${username}/${repo}/tree/main/${file.name}`,
-                        readme: readmeUrl,
-                        category: category.trim()
-                    });
+                    if (notebookFile) {
+                        const notebookUrl = `https://nbviewer.org/github/${username}/${repo}/blob/main/${file.name}/${notebookFile.name}`;
+
+                        categories.add(category.trim());
+
+                        allProjects.push({
+                            name: file.name,
+                            url: notebookUrl,
+                            category: category.trim()
+                        });
+                    }
                 }
             }
 
@@ -220,6 +228,7 @@
         });
 
         filterSelect.addEventListener("change", () => {
+            displayedCount = 0;
             displayProjects(filterSelect.value);
         });
     }
@@ -230,7 +239,9 @@
         const filteredProjects = selectedCategory === "all" ?
             allProjects : allProjects.filter(p => p.category === selectedCategory);
 
-        filteredProjects.forEach(project => {
+        const projectsToShow = filteredProjects.slice(0, displayedCount + batchSize);
+
+        projectsToShow.forEach(project => {
             const col = document.createElement("div");
             col.className = "col-md-4 mb-4";
 
@@ -251,7 +262,7 @@
             const btn = document.createElement("a");
             btn.href = project.url;
             btn.className = "btn btn-primary mt-auto";
-            btn.textContent = "View on GitHub";
+            btn.textContent = "Open Notebook";
             btn.target = "_blank";
 
             cardBody.appendChild(title);
@@ -262,16 +273,20 @@
             col.appendChild(card);
             container.appendChild(col);
         });
+
+        displayedCount += batchSize;
+
+        if (displayedCount >= filteredProjects.length) {
+            seeMoreBtn.style.display = "none";
+        } else {
+            seeMoreBtn.style.display = "block";
+        }
     }
+
+    seeMoreBtn.addEventListener("click", () => {
+        displayProjects(filterSelect.value);
+    });
 
     // Initialize
     loadProjects();
 </script>
-
-
-
-    filterSelect.addEventListener("change", () => renderProjects(allProjects));
-
-    fetchProjects();
-</script>
-
