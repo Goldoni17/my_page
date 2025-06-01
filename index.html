@@ -11,33 +11,59 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
         <link href="css/styles.css" rel="stylesheet" />
         <style>
-    .card {
-        height: 450px;
-        display: flex;
-        flex-direction: column;
-    }
+    /* --- Certifica-se de que o .card-body segue em coluna --- */
+.card-body {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem; /* já existia, se quiser mantenha o seu */
+}
 
-    .card-img-top {
-        height: 175px;
-        object-fit: cover;
-    }
+/* Data (first child) sempre no topo e com tamanho fixo */
+/* A classe .project-date já está sob .card-body */
+.card-body .project-date {
+    flex-shrink: 0;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    color: #555;
+}
 
-    .card-body {
-        flex-grow: 1;
-        display: flex;
-        flex-direction: column;
-    }
-    .project-category {
-        margin-top: auto;
-        margin-bottom: 10px; /* opcional: espaço acima do botão */
-        font-weight: bold;   /* opcional: destaque na categoria */
-        color: #555;         /* opcional: cor mais suave */
-    }
-    .btn {
-        margin-top: auto;
-    }
-    
-                
+/* O título (h5.card-title) também não deverá crescer ou encolher */
+.card-body .card-title {
+    flex-shrink: 0;
+    margin-bottom: 0.5rem;
+}
+
+/* Apenas o parágrafo “p.card-text” que não tenha .text-muted
+   será tratado como descrição — este crescerá para preencher
+   o espaço disponível entre título e categoria. */
+.card-body > p.card-text:not(.text-muted) {
+    flex-grow: 1;
+    overflow: hidden; /* caso queira ocultar texto que passe do espaço */
+    margin-bottom: 0.75rem;
+    font-size: 0.95rem;
+    line-height: 1.3;
+}
+
+/* Categoria sempre fixa logo acima do botão */
+.card-body .project-category {
+    flex-shrink: 0;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+    color: #555;
+}
+
+/* Botão (“Open Notebook”) sempre embaixo */
+.card-body .btn {
+    flex-shrink: 0;
+}
+
+/* --- Garante que todas as imagens dos cards tenham a mesma altura --- */
+.card-img-top {
+    height: 175px;      /* já estava fixo, apenas certificamos */
+    object-fit: cover;  /* recorta a imagem para “caber” sem distorcer */
+}
+
+                  
 </style>
     </head>
 
