@@ -193,7 +193,8 @@
                 if (file.type === "dir") {
                     const projectFiles = await fetchDirectoryFiles(`${baseUrl}/${file.name}`);
 
-                    // Categoria
+                    // =====================================================
+                    // 1) Categoria (igual antes)
                     let category = "Uncategorized";
                     const categoryFile = projectFiles.find(f => f.name === "category.txt");
                     if (categoryFile) {
@@ -204,7 +205,7 @@
                         }
                     }
 
-                    // Descrição
+                    // 2) Descrição (igual antes)
                     let description = "No description available.";
                     const readmeFile = projectFiles.find(f => f.name.toLowerCase() === "readme.md");
                     if (readmeFile) {
@@ -215,16 +216,28 @@
                         }
                     }
 
-                    // Imagem de capa
-                    const coverFile = projectFiles.find(f => 
+                    // 3) Imagem de capa (igual antes)
+                    const coverFile = projectFiles.find(f =>
                         f.name.toLowerCase() === "cover.jpg" || f.name.toLowerCase() === "cover.png"
                     );
                     const coverUrl = coverFile ? coverFile.download_url : null;
 
-                    // Notebook
+                    // 4) Notebook (igual antes)
                     const notebookFile = projectFiles.find(f => f.name.endsWith(".ipynb"));
                     if (notebookFile) {
                         const notebookUrl = `https://nbviewer.org/github/${username}/${repo}/blob/main/${file.name}/${notebookFile.name}`;
+
+                        // 5) Data: ler date.txt se existir
+                        let date = null;
+                        const dateFile = projectFiles.find(f => f.name.toLowerCase() === "date.txt");
+                        if (dateFile) {
+                            const dateUrl = dateFile.download_url;
+                            const dateContent = await fetchRawContent(dateUrl);
+                            if (dateContent) {
+                                // Supondo que o conteúdo esteja no formato "YYYY-MM-DD" ou compatível com Date.parse()
+                                date = dateContent.trim();
+                            }
+                        }
 
                         categories.add(category);
 
@@ -233,11 +246,23 @@
                             url: notebookUrl,
                             category: category,
                             description: description,
-                            coverUrl: coverUrl
+                            coverUrl: coverUrl,
+                            date: date  // adiciona a propriedade date
                         });
                     }
+                    // =====================================================
                 }
             }
+
+            // 6) Ordenar allProjects pela data (do mais recente para o mais antigo)
+            allProjects.sort((a, b) => {
+                // Se algum não tiver date, joga para o final
+                if (!a.date && !b.date) return 0;
+                if (!a.date) return 1;
+                if (!b.date) return -1;
+                // comparar strings “YYYY-MM-DD”
+                return (a.date < b.date) ? 1 : (a.date > b.date) ? -1 : 0;
+            });
 
             updateFilterOptions();
             displayProjects("all");
@@ -298,6 +323,14 @@
             category.className = "card-text text-muted mt-auto";
             category.textContent = `Category: ${project.category}`;
 
+            // Se existir a data, exibe logo acima do botão
+            if (project.date) {
+                const dateEl = document.createElement("p");
+                dateEl.className = "card-text text-muted mb-2";
+                dateEl.textContent = `Date: ${project.date}`;
+                cardBody.appendChild(dateEl);
+            }
+
             const btn = document.createElement("a");
             btn.href = project.url;
             btn.className = "btn btn-primary mt-auto";
@@ -329,3 +362,4 @@
 
     loadProjects();
 </script>
+
