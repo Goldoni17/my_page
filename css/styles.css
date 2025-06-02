@@ -10971,12 +10971,3 @@ section.resume-section .resume-section-content {
   }
 }
 
-.card-body {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-}
-
-.project-category {
-    margin-top: auto;
-}
