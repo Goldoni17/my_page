@@ -20,51 +20,47 @@
 
 /* ---------- CORPO DO CARD (mesma altura total e itens bem posicionados) ---------- */
 .card {
-    height: 450px;          /* garante cards todos com mesma altura */
+    height: 470px;          /* garante cards todos com mesma altura */
     display: flex;
     flex-direction: column;
 }
 
-/* Flex container em coluna para alinhar data, título, descrição, categoria e botão */
-.card-body {
-    flex-grow: 1;           /* ocupa todo o espaço disponível dentro do card */
-    display: flex;
-    flex-direction: column;
-    padding: 1rem;
-}
-
-/* Data sempre no topo, com margem inferior fixa */
+/* Data sempre no topo */
 .card-body .project-date {
     flex-shrink: 0;
     margin-bottom: 0.5rem;
     font-size: 0.9rem;
     color: #555;
+    min-height: 20px; /* ajuste conforme necessidade */
 }
 
-/* Título logo abaixo da data, sem encolher */
+/* Título com altura mínima */
 .card-body .card-title {
     flex-shrink: 0;
     margin-bottom: 0.5rem;
+    min-height: 40px; /* ajuste conforme tamanho médio dos títulos */
 }
 
-/* Descrição ocupa todo o espaço “central” restante */
+/* Descrição ocupa espaço central */
 .card-body > p.card-text:not(.text-muted) {
     flex-grow: 1;
-    overflow: hidden; /* caso o texto ultrapasse, é cortado */
+    overflow: hidden;
     margin-bottom: 0.75rem;
     font-size: 0.95rem;
     line-height: 1.3;
+    min-height: 80px; /* evita colapsar quando for pequeno */
 }
 
-/* Categoria fixa logo acima do botão */
+/* Categoria fixa acima do botão */
 .card-body .project-category {
     flex-shrink: 0;
     margin-bottom: 0.5rem;
     font-weight: bold;
     color: #555;
+    min-height: 20px; /* ajuda no alinhamento */
 }
 
-/* Botão sempre na parte inferior do card-body */
+/* Botão na parte inferior */
 .card-body .btn {
     flex-shrink: 0;
 }
