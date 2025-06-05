@@ -224,74 +224,73 @@
                 if (file.type === "dir") {
                     const projectFiles = await fetchDirectoryFiles(`${baseUrl}/${file.name}`);
 
-                    // =====================================================
-                    // 1) Categoria (igual antes)
-                    let category = "Uncategorized";
+                    // 1) Categoria (suporta múltiplas)
+                    let category = ["Uncategorized"];
                     const categoryFile = projectFiles.find(f => f.name === "category.txt");
                     if (categoryFile) {
                         const categoryUrl = categoryFile.download_url;
                         const categoryContent = await fetchRawContent(categoryUrl);
                         if (categoryContent) {
-                            category = categoryContent.trim();
+                            category = categoryContent
+                                .split(/[\n,]+/) // separa por vírgula ou quebra de linha
+                                .map(c => c.trim())
+                                .filter(c => c);
                         }
                     }
 
-                    // 2) Descrição (igual antes)
+                    // 2) Descrição
                     let description = "No description available.";
                     const readmeFile = projectFiles.find(f => f.name.toLowerCase() === "readme.md");
                     if (readmeFile) {
                         const readmeUrl = readmeFile.download_url;
                         const readmeContent = await fetchRawContent(readmeUrl);
                         if (readmeContent) {
-                            description = readmeContent.split('\n')[0]; // Primeira linha como resumo
+                            description = readmeContent.split('\n')[0];
                         }
                     }
 
-                    // 3) Imagem de capa (igual antes)
+                    // 3) Imagem de capa
                     const coverFile = projectFiles.find(f =>
                         f.name.toLowerCase() === "cover.jpg" || f.name.toLowerCase() === "cover.png"
                     );
                     const coverUrl = coverFile ? coverFile.download_url : null;
 
-                    // 4) Notebook (igual antes)
+                    // 4) Notebook
                     const notebookFile = projectFiles.find(f => f.name.endsWith(".ipynb"));
                     if (notebookFile) {
                         const notebookUrl = `https://nbviewer.org/github/${username}/${repo}/blob/main/${file.name}/${notebookFile.name}`;
 
-                        // 5) Data: ler date.txt se existir
+                        // 5) Data
                         let date = null;
                         const dateFile = projectFiles.find(f => f.name.toLowerCase() === "date.txt");
                         if (dateFile) {
                             const dateUrl = dateFile.download_url;
                             const dateContent = await fetchRawContent(dateUrl);
                             if (dateContent) {
-                                // Supondo que o conteúdo esteja no formato "YYYY-MM-DD" ou compatível com Date.parse()
                                 date = dateContent.trim();
                             }
                         }
 
-                        categories.add(category);
+                        // Adiciona todas as categorias ao Set
+                        category.forEach(cat => categories.add(cat));
 
                         allProjects.push({
                             name: file.name,
                             url: notebookUrl,
-                            category: category,
+                            category: category,  // agora é array
                             description: description,
                             coverUrl: coverUrl,
-                            date: date  // adiciona a propriedade date
+                            date: date
                         });
                     }
-                    // =====================================================
                 }
             }
 
-            // 6) Ordenar allProjects pela data (do mais recente para o mais antigo)
+            // Ordenar pela data
             allProjects.sort((a, b) => {
-                // Se algum não tiver date, joga para o final
                 if (!a.date && !b.date) return 0;
                 if (!a.date) return 1;
                 if (!b.date) return -1;
-                // comparar strings “YYYY-MM-DD”
                 return (a.date < b.date) ? 1 : (a.date > b.date) ? -1 : 0;
             });
 
@@ -320,7 +319,8 @@
         container.innerHTML = "";
 
         const filteredProjects = selectedCategory === "all" ?
-            allProjects : allProjects.filter(p => p.category === selectedCategory);
+            allProjects :
+            allProjects.filter(p => p.category.includes(selectedCategory));
 
         const projectsToShow = filteredProjects.slice(0, displayedCount + batchSize);
 
@@ -350,11 +350,10 @@
             description.className = "card-text";
             description.textContent = project.description;
 
-            const category = document.createElement("p");
-            category.className = "card-text text-muted mt-auto";
-            category.textContent = `Category: ${project.category}`;
+            const categoryEl = document.createElement("p");
+            categoryEl.className = "card-text text-muted mt-auto";
+            categoryEl.textContent = `Category: ${project.category.join(", ")}`;
 
-            // Se existir a data, exibe logo acima do botão
             if (project.date) {
                 const dateEl = document.createElement("p");
                 dateEl.className = "card-text text-muted mb-2";
@@ -370,7 +369,7 @@
 
             cardBody.appendChild(title);
             cardBody.appendChild(description);
-            cardBody.appendChild(category);
+            cardBody.appendChild(categoryEl);
             cardBody.appendChild(btn);
 
             card.appendChild(cardBody);
@@ -393,4 +392,3 @@
 
     loadProjects();
 </script>
-
