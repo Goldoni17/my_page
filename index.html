@@ -1,389 +1,327 @@
 <!DOCTYPE html>
-<html lang="pt-br">
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="description" content="" />
-        <meta name="author" content="" />
-        <title>My Portfolio</title>
-        <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico" />
-        <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-        <link href="https://fonts.googleapis.com/css?family=Saira+Extra+Condensed:500,700" rel="stylesheet" type="text/css" />
-        <link href="https://fonts.googleapis.com/css?family=Muli:400,400i,800,800i" rel="stylesheet" type="text/css" />
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-        <link href="css/styles.css" rel="stylesheet" />
-        <style>
-            /* ---------- IMAGENS DOS CARDS (mesmo tamanho) ---------- */
-            .card-img-top {
-                width: 100%;
-                height: 175px; /* Altura fixa para a imagem */
-                object-fit: cover; /* Garante que a imagem cubra o espaço */
-            }
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guilherme Goldoni - Portfólio</title>
+    <!-- Carregando Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Carregando Lucide Icons CDN para ícones profissionais -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <style>
+        /* Configuração de fonte global e cores de base */
+        :root {
+            --primary-color: #2dd4bf; /* Teal 400 */
+            --dark-bg: #111827; /* Gray 900 */
+            --light-text: #f3f4f6; /* Gray 100 */
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--light-text);
+            scroll-behavior: smooth;
+        }
+        /* Estilo personalizado para botões de destaque */
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: var(--dark-bg);
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem; /* rounded-xl */
+            font-weight: 600;
+            transition: all 0.2s ease-in-out;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+        }
+        .btn-primary:hover {
+            background-color: #14b8a6; /* Teal 500 */
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2), 0 4px 6px -4px rgba(0, 0, 0, 0.2);
+        }
+        /* Estilizando links de navegação para mobile e desktop */
+        .nav-link {
+            transition: color 0.2s;
+        }
+        .nav-link:hover {
+            color: var(--primary-color);
+        }
+        /* Estilo para links em cartões */
+        .project-link {
+            color: var(--primary-color);
+            transition: color 0.2s, transform 0.2s;
+        }
+        .project-link:hover {
+            color: #14b8a6;
+            text-decoration: underline;
+            transform: translateX(5px);
+        }
+        /* Garantir que a barra de navegação flutuante não cubra o conteúdo */
+        section {
+            padding-top: 5rem; /* Espaço para a barra fixa */
+            margin-top: -5rem;
+        }
+        /* Estilo para o cartão de projeto */
+        .project-card {
+            background-color: #1f2937; /* Gray 800 */
+            border: 1px solid #374151; /* Gray 700 */
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 8px 10px -6px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
 
-            /* ---------- CORPO DO CARD (mesma altura total) ---------- */
-            .card {
-                height: 470px; /* Altura total fixa para todos os cards */
-            }
-            
-            .card-body {
-                display: flex;
-                flex-direction: column; /* Organiza o conteúdo verticalmente */
-            }
-            
-            .card-body .card-text {
-                font-size: 0.95rem;
-                line-height: 1.3;
-            }
+<body class="antialiased">
 
-            /* O container do botão usará 'mt-auto' no JS para ficar no fundo */
-        </style>
-    </head>
-    <body id="page-top">
-        <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top" id="sideNav">
-            <a class="navbar-brand js-scroll-trigger" href="#page-top">
-                <span class="d-block d-lg-none">Guilherme Goldoni</span>
-                <span class="d-none d-lg-block"><img class="img-fluid img-profile rounded-circle mx-auto mb-2" src="assets/img/profile.jpg" alt="Profile picture" /></span>
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-            <div class="collapse navbar-collapse" id="navbarResponsive">
-                <ul class="navbar-nav">
-                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#about">About</a></li>
-                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#projects">Projects</a></li>
-                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#education">Education</a></li>
-                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#skills">Skills</a></li>
-                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#certifications">Certifications</a></li>
-                </ul>
+    <!-- Barra de Navegação Fixa e Responsiva -->
+    <header class="sticky top-0 z-50 bg-gray-900/90 backdrop-blur-sm shadow-lg">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+            <!-- Logo/Nome -->
+            <a href="#hero" class="text-2xl font-bold text-white hover:text-teal-400 transition duration-300">Meu.Portfólio</a>
+
+            <!-- Menu Mobile -->
+            <div class="sm:hidden">
+                <button id="menu-button" class="text-gray-400 hover:text-teal-400 focus:outline-none">
+                    <i data-lucide="menu" class="h-6 w-6"></i>
+                </button>
+            </div>
+
+            <!-- Menu Desktop -->
+            <div class="hidden sm:flex space-x-6 text-lg font-medium">
+                <a href="#about" class="nav-link text-gray-300">Sobre</a>
+                <a href="#skills" class="nav-link text-gray-300">Habilidades</a>
+                <a href="#projects" class="nav-link text-gray-300">Projetos</a>
+                <a href="#contact" class="nav-link text-gray-300">Contato</a>
             </div>
         </nav>
-        <div class="container-fluid p-0">
-            <section class="resume-section" id="about">
-                <div class="resume-section-content">
-                    <h1 class="mb-0">
-                        Guilherme 
-                        <span class="text-primary">Goldoni</span>
-                    </h1>
-                    <div class="subheading mb-5">
-                        Santo André · São Paulo · (55) 1197834-0467 ·
-                        <a href="mailto:goldoniguilherme15@gmail.com">goldoniguilherme15@gmail.com</a>
-                    </div>
-                    <p class="lead mb-5">Hi! I'm a Data student currently pursuing a degree in Big Data, Data Science, and Business Intelligence at Universidade São Judas Tadeu in Brazil. I'm passionate about Artificial Intelligence, Data Analysis, and creating tech solutions that truly make a difference. Right now, I'm working on personal projects using Python, SQL, MongoDB, and Power BI, while also strengthening my knowledge in Statistics and Math to prepare for a future Master's degree. I'm a hands-on learner who’s always looking to grow through courses, books, and real-world projects. My goal is to become a Data Scientist and, eventually, launch my own tech company focused on AI.</p>
-                    <div class="social-icons">
-                        <a class="social-icon" href="https://www.linkedin.com/in/guilherme-goldoni-942724238" target="_blank">
-                            <i class="fab fa-linkedin-in"></i>
-                        </a>
-                        <a class="social-icon" href="https://github.com/Goldoni17" target="_blank">
-                            <i class="fab fa-github"></i>
-                        </a>
-                        <a class="social-icon" href="https://www.kaggle.com/guilhermegoldoni" target="_blank">
-                            <i class="fab fa-kaggle"></i>
-                        </a>
-                    </div>
-                </div>
-            </section>
-            <hr class="m-0" />
-            <section class="resume-section" id="projects">
-                <div class="resume-section-content">
-                    <h2 class="mb-5">My Latest Projects</h2>
-                    <p class="mb-5">Take a look at my recent work.</p>
 
-                    <div class="mb-4">
-                        <label for="categoryFilter" class="form-label">Filter by category:</label>
-                        <select id="categoryFilter" class="form-select">
-                            <option value="all">All</option>
-                        </select>
-                    </div>
-
-                    <div id="github-projects" class="row"></div>
-
-                    <div class="text-center mt-4">
-                        <button id="seeMoreBtn" class="btn btn-secondary">See more projects</button>
-                    </div>
-                </div>
-            </section>
-            <hr class="m-0" />
-            <section class="resume-section" id="education">
-                <div class="resume-section-content">
-                    <h2 class="mb-5">Education</h2>
-                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
-                        <div class="flex-grow-1">
-                            <h3 class="mb-0">Universidade São Judas Tadeu</h3>
-                            <div class="subheading mb-3">Bachelor of Technology</div>
-                            <div>Banco de Dados - Data Science, Big Data e BI</div>
-                        </div>
-                        <div class="flex-shrink-0"><span class="text-primary">August 2023 - December 2025</span></div>
-                    </div>
-                </div>
-            </section>
-            <hr class="m-0" />
-            <section class="resume-section" id="skills">
-                <div class="resume-section-content">
-                    <h2 class="mb-5">Skills</h2>
-                    <div class="subheading mb-3">Programming Languages & Tools</div>
-                    <ul class="list-inline dev-icons">
-                        <li class="list-inline-item"><img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/python/python-original.svg" alt="Python" title="Python" width="40" height="40"></li>
-                        <li class="list-inline-item"><img src="https://raw.githubusercontent.com/valohai/ml-logos/master/pandas.svg" alt="Pandas" title="Pandas" width="40" height="40"></li>
-                        <li class="list-inline-item"><img src="https://raw.githubusercontent.com/valohai/ml-logos/master/numpy.svg" alt="NumPy" title="NumPy" width="40" height="40"></li>
-                        <li class="list-inline-item"><img src="https://cdn-icons-png.flaticon.com/512/4248/4248443.png" alt="SQL" title="SQL" width="40" height="40"></li>
-                        <li class="list-inline-item"><img src="https://cdn-icons-png.flaticon.com/512/732/732220.png" alt="Excel" title="Excel" width="40" height="40"></li>
-                        <li class="list-inline-item"><img src="https://www.r-project.org/logo/Rlogo.png" alt="R" title="R" width="40" height="40"></li>
-                        <li class="list-inline-item"><img src="https://upload.wikimedia.org/wikipedia/commons/3/38/Jupyter_logo.svg" alt="Jupyter Notebooks" title="Jupyter Notebooks" width="40" height="40"></li>
-                        <li class="list-inline-item"><img src="https://raw.githubusercontent.com/valohai/ml-logos/master/scikit-learn.svg" alt="Scikit-learn" title="Scikit-learn" width="40" height="40"></li>
-                    </ul>
-                    <div class="subheading mb-3">Workflow</div>
-                    <ul class="fa-ul mb-0">
-                        <li><span class="fa-li"><i class="fas fa-check"></i></span>Data Analysis, Cleaning and Visualization</li>
-                        <li><span class="fa-li"><i class="fas fa-check"></i></span>Machine Learning and Statistics</li>
-                        <li><span class="fa-li"><i class="fas fa-check"></i></span>Cloud</li>
-                        <li><span class="fa-li"><i class="fas fa-check"></i></span>Business Intelligence</li>
-                    </ul>
-                </div>
-            </section>
-            <hr class="m-0" />
-            <section class="resume-section" id="certifications">
-                <div class="resume-section-content">
-                    <h2 class="mb-5">Certifications</h2>
-                    <ul class="fa-ul mb-0">
-                        <li><span class="fa-li"><i class="fas fa-trophy text-warning"></i></span>Formação Analista de Dados - DSA</li>
-                        <li><span class="fa-li"><i class="fas fa-trophy text-warning"></i></span>Fundamentos de Linguagem Python para Análise de Dados e Data Science - DSA</li>
-                        <li><span class="fa-li"><i class="fas fa-trophy text-warning"></i></span>Introduction to Data Science - Cisco</li>
-                        <li><span class="fa-li"><i class="fas fa-trophy text-warning"></i></span>Google Cloud Foundations - Google</li>
-                    </ul>
-                </div>
-            </section>
+        <!-- Menu Dropdown Mobile -->
+        <div id="mobile-menu" class="hidden sm:hidden bg-gray-800 border-t border-gray-700">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="#about" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-gray-700 nav-link">Sobre</a>
+                <a href="#skills" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-gray-700 nav-link">Habilidades</a>
+                <a href="#projects" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-gray-700 nav-link">Projetos</a>
+                <a href="#contact" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-gray-700 nav-link">Contato</a>
+            </div>
         </div>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="js/scripts.js"></script>
-        
-        <script>
-            const username = "Goldoni17";
-            const repo = "projetos";
-            const baseUrl = `https://api.github.com/repos/${username}/${repo}/contents`;
-            const container = document.getElementById("github-projects");
-            const filterSelect = document.getElementById("categoryFilter");
-            const seeMoreBtn = document.getElementById("seeMoreBtn");
+    </header>
 
-            let allProjects = [];
-            let categories = new Set();
-            let displayedCount = 0;
-            const batchSize = 3;
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-            async function fetchDirectoryFiles(url) {
-                const response = await fetch(url);
-                return await response.json();
-            }
+        <!-- Seção Principal (Hero) -->
+        <section id="hero" class="pt-20 pb-28 flex flex-col items-center text-center">
+            <div class="w-32 h-32 mb-6 rounded-full overflow-hidden border-4 border-teal-400">
+                <!-- Imagem de Perfil Placeholder - Substitua pela sua foto -->
+                <img src="https://placehold.co/128x128/1f2937/d1d5db?text=Sua+Foto" onerror="this.src='https://placehold.co/128x128/1f2937/d1d5db?text=Foto';" alt="Foto de Perfil" class="w-full h-full object-cover">
+            </div>
+            <h1 class="text-4xl sm:text-6xl font-extrabold text-white mb-4 leading-tight">
+                Olá, eu sou o <span class="text-teal-400">Guilherme</span>.
+            </h1>
+            <p class="text-xl sm:text-2xl text-gray-300 mb-8 max-w-2xl">
+                Cientista de Dados, Machine Learning e LLM Engineer.
+            </p>
+            <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+                <a href="#projects" class="btn-primary">
+                    <i data-lucide="briefcase" class="inline-block h-5 w-5 mr-2"></i> Ver Projetos
+                </a>
+                <a href="mailto:seuemail@exemplo.com" class="bg-gray-700 text-gray-100 px-6 py-3 rounded-xl font-semibold hover:bg-gray-600 transition duration-300 flex items-center justify-center">
+                    <i data-lucide="mail" class="inline-block h-5 w-5 mr-2"></i> Contate-me
+                </a>
+            </div>
+        </section>
 
-            async function fetchRawContent(url) {
-                const response = await fetch(url);
-                if (response.ok) {
-                    return await response.text();
-                }
-                return null;
-            }
+        <!-- Seção Sobre Mim -->
+        <section id="about" class="py-20 border-t border-gray-800">
+            <h2 class="text-3xl sm:text-4xl font-bold text-center mb-12 text-teal-400 flex items-center justify-center">
+                <i data-lucide="user" class="h-8 w-8 mr-3"></i> Sobre Mim
+            </h2>
+            <div class="max-w-4xl mx-auto text-lg text-gray-300 space-y-6">
+                <p>
+                    Sou um desenvolvedor apaixonado por tecnologia e inovação, com X anos de experiência em desenvolvimento web. Minha jornada começou com pequenos projetos em HTML, CSS e JavaScript, e hoje me dedico a construir aplicações robustas e escaláveis, utilizando as melhores práticas do mercado.
+                </p>
+                <p>
+                    Sou proficiente em tecnologias front-end (como React/Vue) e back-end (como Node.js/Python), e estou sempre buscando aprender novas ferramentas e metodologias. Acredito que o bom código é aquele que é limpo, eficiente e fácil de manter.
+                </p>
+                <p>
+                    Atualmente, estou disponível para projetos freelance e em busca de novas oportunidades desafiadoras.
+                </p>
+            </div>
+        </section>
 
-            async function loadProjects() {
-                try {
-                    const response = await fetch(baseUrl);
-                    const files = await response.json();
+        <!-- Seção Habilidades -->
+        <section id="skills" class="py-20 border-t border-gray-800">
+            <h2 class="text-3xl sm:text-4xl font-bold text-center mb-12 text-teal-400 flex items-center justify-center">
+                <i data-lucide="settings-2" class="h-8 w-8 mr-3"></i> Habilidades Técnicas
+            </h2>
+            <div class="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6">
+                <!-- Card de Habilidade 1 -->
+                <div class="bg-gray-800 p-6 rounded-xl text-center shadow-lg border border-gray-700 hover:border-teal-400 transition duration-300">
+                    <i data-lucide="code" class="h-8 w-8 text-teal-400 mx-auto mb-3"></i>
+                    <h3 class="text-xl font-semibold mb-1">Front-End</h3>
+                    <p class="text-gray-400">HTML5, CSS3, JavaScript (ES6+), React, Vue.js, Tailwind CSS</p>
+                </div>
+                <!-- Card de Habilidade 2 -->
+                <div class="bg-gray-800 p-6 rounded-xl text-center shadow-lg border border-gray-700 hover:border-teal-400 transition duration-300">
+                    <i data-lucide="server" class="h-8 w-8 text-teal-400 mx-auto mb-3"></i>
+                    <h3 class="text-xl font-semibold mb-1">Back-End</h3>
+                    <p class="text-gray-400">Node.js, Python (Django/Flask), APIs RESTful, GraphQL</p>
+                </div>
+                <!-- Card de Habilidade 3 -->
+                <div class="bg-gray-800 p-6 rounded-xl text-center shadow-lg border border-gray-700 hover:border-teal-400 transition duration-300">
+                    <i data-lucide="database" class="h-8 w-8 text-teal-400 mx-auto mb-3"></i>
+                    <h3 class="text-xl font-semibold mb-1">Banco de Dados</h3>
+                    <p class="text-gray-400">PostgreSQL, MongoDB, MySQL, Firebase Firestore</p>
+                </div>
+                <!-- Card de Habilidade 4 -->
+                <div class="bg-gray-800 p-6 rounded-xl text-center shadow-lg border border-gray-700 hover:border-teal-400 transition duration-300">
+                    <i data-lucide="git-fork" class="h-8 w-8 text-teal-400 mx-auto mb-3"></i>
+                    <h3 class="text-xl font-semibold mb-1">Ferramentas</h3>
+                    <p class="text-gray-400">Git, Docker, VS Code, GitHub, Metodologias Ágeis</p>
+                </div>
+            </div>
+        </section>
 
-                    for (const file of files) {
-                        if (file.type === "dir") {
-                            const projectFiles = await fetchDirectoryFiles(`${baseUrl}/${file.name}`);
+        <!-- Seção Projetos -->
+        <section id="projects" class="py-20 border-t border-gray-800">
+            <h2 class="text-3xl sm:text-4xl font-bold text-center mb-12 text-teal-400 flex items-center justify-center">
+                <i data-lucide="folder-open" class="h-8 w-8 mr-3"></i> Meus Projetos
+            </h2>
 
-                            // 1) Categoria
-                            let category = ["Uncategorized"];
-                            const categoryFile = projectFiles.find(f => f.name === "category.txt");
-                            if (categoryFile) {
-                                const categoryUrl = categoryFile.download_url;
-                                const categoryContent = await fetchRawContent(categoryUrl);
-                                if (categoryContent) {
-                                    category = categoryContent
-                                        .split(/[\n,]+/)
-                                        .map(c => c.trim())
-                                        .filter(c => c);
-                                }
-                            }
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Projeto 1 -->
+                <div class="project-card p-6 rounded-xl shadow-xl">
+                    <div class="h-40 bg-gray-700 rounded-lg mb-4 flex items-center justify-center text-gray-400">
+                        <i data-lucide="laptop" class="h-10 w-10"></i>
+                    </div>
+                    <h3 class="text-2xl font-semibold mb-2 text-white">Sistema de Gerenciamento XYZ</h3>
+                    <p class="text-gray-400 mb-4">Aplicação web completa para gestão de tarefas internas, desenvolvida com React e Node.js.</p>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="text-sm bg-teal-800 text-teal-100 px-3 py-1 rounded-full">React</span>
+                        <span class="text-sm bg-teal-800 text-teal-100 px-3 py-1 rounded-full">Node.js</span>
+                        <span class="text-sm bg-teal-800 text-teal-100 px-3 py-1 rounded-full">MongoDB</span>
+                    </div>
+                    <a href="https://github.com/seuusuario/projeto1" target="_blank" class="project-link flex items-center">
+                        Ver no GitHub <i data-lucide="arrow-right" class="h-4 w-4 ml-1"></i>
+                    </a>
+                </div>
 
-                            // 2) Descrição
-                            let description = "No description available.";
-                            const readmeFile = projectFiles.find(f => f.name.toLowerCase() === "readme.md");
-                            if (readmeFile) {
-                                const readmeUrl = readmeFile.download_url;
-                                const readmeContent = await fetchRawContent(readmeUrl);
-                                if (readmeContent) {
-                                    description = readmeContent.split('\n')[0]; 
-                                }
-                            }
+                <!-- Projeto 2 -->
+                <div class="project-card p-6 rounded-xl shadow-xl">
+                    <div class="h-40 bg-gray-700 rounded-lg mb-4 flex items-center justify-center text-gray-400">
+                        <i data-lucide="smartphone" class="h-10 w-10"></i>
+                    </div>
+                    <h3 class="text-2xl font-semibold mb-2 text-white">Landing Page de SaaS</h3>
+                    <p class="text-gray-400 mb-4">Página de alta conversão para lançamento de software, com design responsivo e animações em CSS puro.</p>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="text-sm bg-teal-800 text-teal-100 px-3 py-1 rounded-full">HTML</span>
+                        <span class="text-sm bg-teal-800 text-teal-100 px-3 py-1 rounded-full">Tailwind CSS</span>
+                        <span class="text-sm bg-teal-800 text-teal-100 px-3 py-1 rounded-full">JavaScript</span>
+                    </div>
+                    <a href="https://github.com/seuusuario/projeto2" target="_blank" class="project-link flex items-center">
+                        Ver no GitHub <i data-lucide="arrow-right" class="h-4 w-4 ml-1"></i>
+                    </a>
+                </div>
 
-                            // 3) Imagem de capa
-                            const coverFile = projectFiles.find(f =>
-                                f.name.toLowerCase() === "cover.jpg" || f.name.toLowerCase() === "cover.png"
-                            );
-                            const coverUrl = coverFile ? coverFile.download_url : null;
+                <!-- Projeto 3 -->
+                <div class="project-card p-6 rounded-xl shadow-xl">
+                    <div class="h-40 bg-gray-700 rounded-lg mb-4 flex items-center justify-center text-gray-400">
+                        <i data-lucide="gamepad" class="h-10 w-10"></i>
+                    </div>
+                    <h3 class="text-2xl font-semibold mb-2 text-white">Jogo Simples em JS</h3>
+                    <p class="text-gray-400 mb-4">Pequeno jogo casual desenvolvido apenas com JavaScript puro e Canvas para demonstração de lógica.</p>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="text-sm bg-teal-800 text-teal-100 px-3 py-1 rounded-full">JavaScript</span>
+                        <span class="text-sm bg-teal-800 text-teal-100 px-3 py-1 rounded-full">Canvas API</span>
+                    </div>
+                    <a href="https://github.com/seuusuario/projeto3" target="_blank" class="project-link flex items-center">
+                        Ver no GitHub <i data-lucide="arrow-right" class="h-4 w-4 ml-1"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
 
-                            // 4) Data
-                            let date = null;
-                            const dateFile = projectFiles.find(f => f.name.toLowerCase() === "date.txt");
-                            if (dateFile) {
-                                const dateUrl = dateFile.download_url;
-                                const dateContent = await fetchRawContent(dateUrl);
-                                if (dateContent) {
-                                    date = dateContent.trim();
-                                }
-                            }
+        <!-- Seção Contato -->
+        <section id="contact" class="py-20 border-t border-gray-800">
+            <h2 class="text-3xl sm:text-4xl font-bold text-center mb-12 text-teal-400 flex items-center justify-center">
+                <i data-lucide="send" class="h-8 w-8 mr-3"></i> Entre em Contato
+            </h2>
+            <div class="max-w-2xl mx-auto text-center bg-gray-800 p-8 rounded-xl shadow-xl border border-gray-700">
+                <p class="text-lg text-gray-300 mb-6">
+                    Tem um projeto em mente ou apenas quer trocar uma ideia? Sinta-se à vontade para me contatar.
+                </p>
+                <div class="space-y-4">
+                    <p class="text-xl font-medium text-white">
+                        <i data-lucide="mail" class="inline-block h-5 w-5 mr-2 text-teal-400"></i>
+                        E-mail: <a href="mailto:seuemail@exemplo.com" class="text-teal-400 hover:underline">seuemail@exemplo.com</a>
+                    </p>
+                    <p class="text-xl font-medium text-white">
+                        <i data-lucide="linkedin" class="inline-block h-5 w-5 mr-2 text-teal-400"></i>
+                        LinkedIn: <a href="https://linkedin.com/in/seuusuario" target="_blank" class="text-teal-400 hover:underline">/in/seuusuario</a>
+                    </p>
+                    <p class="text-xl font-medium text-white">
+                        <i data-lucide="github" class="inline-block h-5 w-5 mr-2 text-teal-400"></i>
+                        GitHub: <a href="https://github.com/seuusuario" target="_blank" class="text-teal-400 hover:underline">/seuusuario</a>
+                    </p>
+                </div>
+            </div>
+        </section>
 
-                            // 5) [NOVO] Live Demo URL (Link Principal)
-                            let demoUrl = null;
-                            const demoFile = projectFiles.find(f => f.name.toLowerCase() === "demo_url.txt");
-                            if (demoFile) {
-                                const demoFileUrl = demoFile.download_url;
-                                const demoContent = await fetchRawContent(demoFileUrl);
-                                if (demoContent) {
-                                    demoUrl = demoContent.trim();
-                                }
-                            }
-                            
-                            // 6) [NOVO] Link do Código (Link Secundário)
-                            const codeUrl = `https://github.com/${username}/${repo}/tree/main/${file.name}`;
+    </main>
 
-                            // Adiciona todas as categorias ao Set
-                            category.forEach(cat => categories.add(cat));
+    <!-- Rodapé -->
+    <footer class="mt-20 py-8 border-t border-gray-800 text-center text-gray-500">
+        <p>&copy; 2025 Seu Nome. Desenvolvido com <span class="text-red-500">&hearts;</span> e Tailwind CSS.</p>
+    </footer>
 
-                            allProjects.push({
-                                name: file.name,
-                                demoUrl: demoUrl,       // Link para o Streamlit
-                                codeUrl: codeUrl,       // Link para o GitHub
-                                category: category,
-                                description: description,
-                                coverUrl: coverUrl,
-                                date: date
+    <script>
+        // Função JavaScript para a navegação e menu mobile
+        document.addEventListener('DOMContentLoaded', () => {
+            // Inicializa os ícones do Lucide
+            lucide.createIcons();
+
+            const menuButton = document.getElementById('menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const navLinks = document.querySelectorAll('.nav-link');
+
+            // 1. Funcionalidade do Menu Mobile
+            menuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            // Fechar o menu mobile ao clicar em um link
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    // Fechar o menu se estiver visível (apenas em mobile)
+                    if (!mobileMenu.classList.contains('hidden')) {
+                         mobileMenu.classList.add('hidden');
+                    }
+                });
+            });
+
+            // 2. Funcionalidade de Smooth Scroll (Melhora a experiência de navegação)
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    // Remove o comportamento padrão do link para usar o smooth scroll
+                    // O CSS 'scroll-behavior: smooth' já faria isso, mas este código garante a compatibilidade
+                    if (this.hash !== "") {
+                        e.preventDefault();
+                        const hash = this.hash;
+                        const targetElement = document.querySelector(hash);
+                        if (targetElement) {
+                            // Calcula a posição de destino com um offset para a barra de navegação fixa
+                            const offset = document.querySelector('header').offsetHeight;
+                            const elementPosition = targetElement.getBoundingClientRect().top + window.scrollY;
+                            window.scrollTo({
+                                top: elementPosition - offset,
+                                behavior: "smooth"
                             });
                         }
                     }
-
-                    // Ordenar pela data
-                    allProjects.sort((a, b) => {
-                        if (!a.date && !b.date) return 0;
-                        if (!a.date) return 1;
-                        if (!b.date) return -1;
-                        return (a.date < b.date) ? 1 : (a.date > b.date) ? -1 : 0;
-                    });
-
-                    updateFilterOptions();
-                    displayProjects("all");
-                } catch (error) {
-                    console.error("Error loading projects:", error);
-                }
-            }
-
-            function updateFilterOptions() {
-                categories.forEach(category => {
-                    const option = document.createElement("option");
-                    option.value = category;
-                    option.textContent = category;
-                    filterSelect.appendChild(option);
                 });
-
-                filterSelect.addEventListener("change", () => {
-                    displayedCount = 0;
-                    displayProjects(filterSelect.value);
-                });
-            }
-
-            function displayProjects(selectedCategory) {
-                container.innerHTML = "";
-
-                const filteredProjects = selectedCategory === "all" ?
-                    allProjects :
-                    allProjects.filter(p => p.category.includes(selectedCategory));
-
-                const projectsToShow = filteredProjects.slice(0, displayedCount + batchSize);
-
-                projectsToShow.forEach(project => {
-                    const col = document.createElement("div");
-                    col.className = "col-md-4 mb-4";
-
-                    const card = document.createElement("div");
-                    card.className = "card h-100"; // h-100 para Bootstrap garantir mesma altura
-
-                    if (project.coverUrl) {
-                        const img = document.createElement("img");
-                        img.src = project.coverUrl;
-                        img.className = "card-img-top";
-                        img.alt = project.name;
-                        card.appendChild(img);
-                    }
-
-                    const cardBody = document.createElement("div");
-                    cardBody.className = "card-body d-flex flex-column"; // Flex column
-
-                    if (project.date) {
-                        const dateEl = document.createElement("p");
-                        dateEl.className = "card-text text-muted mb-2";
-                        dateEl.textContent = `Data: ${project.date}`;
-                        cardBody.appendChild(dateEl);
-                    }
-
-                    const title = document.createElement("h5");
-                    title.className = "card-title";
-                    title.textContent = project.name;
-                    cardBody.appendChild(title);
-
-                    const description = document.createElement("p");
-                    description.className = "card-text";
-                    description.textContent = project.description;
-                    cardBody.appendChild(description);
-
-                    const categoryEl = document.createElement("p");
-                    categoryEl.className = "card-text text-muted";
-                    categoryEl.textContent = `Categoria: ${project.category.join(", ")}`;
-                    cardBody.appendChild(categoryEl);
-                    
-                    // [NOVO] Container de Botões
-                    const btnContainer = document.createElement("div");
-                    // 'mt-auto' empurra para o fundo
-                    btnContainer.className = "mt-auto d-flex flex-wrap gap-2"; 
-
-                    // Botão Principal (Demo)
-                    if (project.demoUrl) {
-                        const btnDemo = document.createElement("a");
-                        btnDemo.href = project.demoUrl;
-                        btnDemo.className = "btn btn-primary"; // Botão primário
-                        btnDemo.textContent = "Testar Projeto";
-                        btnDemo.target = "_blank";
-                        btnContainer.appendChild(btnDemo);
-                    }
-
-                    // Botão Secundário (Código)
-                    if (project.codeUrl) {
-                        const btnCode = document.createElement("a");
-                        btnCode.href = project.codeUrl;
-                        btnCode.className = "btn btn-outline-secondary"; // Botão secundário
-                        btnCode.textContent = "Ver Código";
-                        btnCode.target = "_blank";
-                        btnContainer.appendChild(btnCode);
-                    }
-                    
-                    cardBody.appendChild(btnContainer); // Adiciona o container de botões
-
-                    card.appendChild(cardBody);
-                    col.appendChild(card);
-                    container.appendChild(col);
-                });
-
-                displayedCount += batchSize;
-
-                if (displayedCount >= filteredProjects.length) {
-                    seeMoreBtn.style.display = "none";
-                } else {
-                    seeMoreBtn.style.display = "inline-block";
-                }
-            }
-
-            seeMoreBtn.addEventListener("click", () => {
-                displayProjects(filterSelect.value);
             });
+        });
+    </script>
 
-            loadProjects();
-        </script>
-    </body>
+</body>
 </html>
