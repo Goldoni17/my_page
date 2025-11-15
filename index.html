@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guilherme Goldoni - Portfólio</title>
+    <title>Guilherme Goldoni - Portfólio de Data Science</title>
     <!-- Carregando Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Carregando Lucide Icons CDN para ícones profissionais -->
@@ -69,6 +69,41 @@
             transform: translateY(-5px);
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 8px 10px -6px rgba(0, 0, 0, 0.2);
         }
+        
+        /* Estilo para a barra de progresso do idioma */
+        .progress-bar {
+            height: 10px;
+            background-color: #374151; /* Gray 700 */
+            border-radius: 9999px; /* rounded-full */
+            overflow: hidden;
+            margin-top: 0.5rem;
+        }
+        .progress-fill {
+            background-color: var(--primary-color);
+            height: 100%;
+            transition: width 0.5s ease-out;
+        }
+
+        /* Estilo específico para itens da lista de certificados */
+        .certificate-item {
+            background-color: #1f2937;
+            border-left: 4px solid var(--primary-color);
+            padding: 1rem 1.5rem;
+            border-radius: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        /* Media query para empilhar itens em telas pequenas */
+        @media (max-width: 640px) {
+            .certificate-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .certificate-date {
+                margin-top: 0.5rem;
+            }
+        }
     </style>
 </head>
 
@@ -76,22 +111,24 @@
 
     <!-- Barra de Navegação Fixa e Responsiva -->
     <header class="sticky top-0 z-50 bg-gray-900/90 backdrop-blur-sm shadow-lg">
-        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-            <!-- Logo/Nome -->
-            <a href="#hero" class="text-2xl font-bold text-white hover:text-teal-400 transition duration-300">Meu.Portfólio</a>
-
-            <!-- Menu Mobile -->
-            <div class="sm:hidden">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-center items-center">
+            <!-- Menu Mobile: Centralizado e com botão de toggle -->
+            <div class="flex justify-between w-full sm:hidden">
+                <a href="#hero" class="text-2xl font-bold text-white hover:text-teal-400 transition duration-300">Início</a>
                 <button id="menu-button" class="text-gray-400 hover:text-teal-400 focus:outline-none">
                     <i data-lucide="menu" class="h-6 w-6"></i>
                 </button>
             </div>
 
-            <!-- Menu Desktop -->
+            <!-- Menu Desktop: Centralizado -->
             <div class="hidden sm:flex space-x-6 text-lg font-medium">
                 <a href="#about" class="nav-link text-gray-300">Sobre</a>
-                <a href="#skills" class="nav-link text-gray-300">Habilidades</a>
+                <a href="#experience" class="nav-link text-gray-300">Experiência</a>
+                <a href="#skills" class="nav-link text-gray-300">Habilidades Técnicas</a>
+                <a href="#soft-skills-languages" class="nav-link text-gray-300">Habilidades Gerais</a>
                 <a href="#projects" class="nav-link text-gray-300">Projetos</a>
+                <a href="#academic-formations" class="nav-link text-gray-300">Formação Acadêmica</a>
+                <a href="#certificates" class="nav-link text-gray-300">Certificados</a>
                 <a href="#contact" class="nav-link text-gray-300">Contato</a>
             </div>
         </nav>
@@ -100,8 +137,12 @@
         <div id="mobile-menu" class="hidden sm:hidden bg-gray-800 border-t border-gray-700">
             <div class="px-2 pt-2 pb-3 space-y-1">
                 <a href="#about" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-gray-700 nav-link">Sobre</a>
-                <a href="#skills" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-gray-700 nav-link">Habilidades</a>
+                <a href="#experience" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-gray-700 nav-link">Experiência</a>
+                <a href="#skills" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-gray-700 nav-link">Habilidades Técnicas</a>
+                <a href="#soft-skills-languages" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-gray-700 nav-link">Habilidades Gerais</a>
                 <a href="#projects" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-gray-700 nav-link">Projetos</a>
+                <a href="#academic-formations" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-gray-700 nav-link">Formação Acadêmica</a>
+                <a href="#certificates" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-gray-700 nav-link">Certificados</a>
                 <a href="#contact" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-gray-700 nav-link">Contato</a>
             </div>
         </div>
@@ -113,133 +154,337 @@
         <section id="hero" class="pt-20 pb-28 flex flex-col items-center text-center">
             <div class="w-32 h-32 mb-6 rounded-full overflow-hidden border-4 border-teal-400">
                 <!-- Imagem de Perfil Placeholder - Substitua pela sua foto -->
-                <img src="https://placehold.co/128x128/1f2937/d1d5db?text=Sua+Foto" onerror="this.src='https://placehold.co/128x128/1f2937/d1d5db?text=Foto';" alt="Foto de Perfil" class="w-full h-full object-cover">
+                <img src="https://placehold.co/128x128/1f2937/d1d5db?text=Guilherme" onerror="this.src='https://placehold.co/128x128/1f2937/d1d5db?text=Foto';" alt="Foto de Perfil" class="w-full h-full object-cover">
             </div>
             <h1 class="text-4xl sm:text-6xl font-extrabold text-white mb-4 leading-tight">
-                Olá, eu sou o <span class="text-teal-400">Guilherme</span>.
+                Olá, eu sou o <span class="text-teal-400">Guilherme Goldoni</span>.
             </h1>
+            <!-- NOVO TEXTO DE APRESENTAÇÃO -->
             <p class="text-xl sm:text-2xl text-gray-300 mb-8 max-w-2xl">
-                Cientista de Dados, Machine Learning e LLM Engineer.
+                AI Engineer com foco em Machine Learning, desenvolvimento de LLMs e sistemas de IA Generativa prontos para produção.
             </p>
             <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
-                <a href="#projects" class="btn-primary">
-                    <i data-lucide="briefcase" class="inline-block h-5 w-5 mr-2"></i> Ver Projetos
+                <!-- Mantive este link para o Portfólio Online original conforme o Hero, que é mais focado no front-end -->
+                <a href="https://goldoni17.github.io/my%20page/" target="_blank" class="btn-primary">
+                    <i data-lucide="monitor" class="inline-block h-5 w-5 mr-2"></i> Ver Portfólio Online
                 </a>
-                <a href="mailto:seuemail@exemplo.com" class="bg-gray-700 text-gray-100 px-6 py-3 rounded-xl font-semibold hover:bg-gray-600 transition duration-300 flex items-center justify-center">
+                <a href="mailto:goldoniguilherme15@gmail.com" class="bg-gray-700 text-gray-100 px-6 py-3 rounded-xl font-semibold hover:bg-gray-600 transition duration-300 flex items-center justify-center">
                     <i data-lucide="mail" class="inline-block h-5 w-5 mr-2"></i> Contate-me
                 </a>
             </div>
         </section>
 
-        <!-- Seção Sobre Mim -->
+        <!-- Seção Sobre Mim - NOVO TEXTO (Sem Asteriscos) -->
         <section id="about" class="py-20 border-t border-gray-800">
             <h2 class="text-3xl sm:text-4xl font-bold text-center mb-12 text-teal-400 flex items-center justify-center">
                 <i data-lucide="user" class="h-8 w-8 mr-3"></i> Sobre Mim
             </h2>
             <div class="max-w-4xl mx-auto text-lg text-gray-300 space-y-6">
                 <p>
-                    Sou um desenvolvedor apaixonado por tecnologia e inovação, com X anos de experiência em desenvolvimento web. Minha jornada começou com pequenos projetos em HTML, CSS e JavaScript, e hoje me dedico a construir aplicações robustas e escaláveis, utilizando as melhores práticas do mercado.
+                    Sou um AI Engineer e Cientista de Dados em formação, focado na construção de soluções de ponta a ponta que utilizam Machine Learning e Modelos de Linguagem de Grande Escala (LLMs). Minha expertise reside em transformar conceitos de IA em produtos funcionais e escaláveis, garantindo que a inovação tecnológica gere valor e impacto real.
                 </p>
                 <p>
-                    Sou proficiente em tecnologias front-end (como React/Vue) e back-end (como Node.js/Python), e estou sempre buscando aprender novas ferramentas e metodologias. Acredito que o bom código é aquele que é limpo, eficiente e fácil de manter.
+                    Minha abordagem é totalmente técnica, abrangendo desde a engenharia de dados (ETL/ELT) e a modelagem estatística até a implementação de práticas robustas de MLOps (Git, Docker, Azure) para colocar modelos em produção com confiabilidade. Sou apaixonado por IA Generativa e por aplicar a técnica de RAG (Retrieval-Augmented Generation) para criar agentes de IA contextuais e de alta precisão.
                 </p>
                 <p>
-                    Atualmente, estou disponível para projetos freelance e em busca de novas oportunidades desafiadoras.
+                    Busco integrar meu conhecimento em Data Science com a experiência prática em desenvolvimento de software para impulsionar a inovação em empresas orientadas a dados.
                 </p>
             </div>
         </section>
 
-        <!-- Seção Habilidades -->
+        <!-- NOVA SEÇÃO: Experiência Profissional -->
+        <section id="experience" class="py-20 border-t border-gray-800">
+            <h2 class="text-3xl sm:text-4xl font-bold text-center mb-12 text-teal-400 flex items-center justify-center">
+                <i data-lucide="briefcase" class="h-8 w-8 mr-3"></i> Experiência Profissional
+            </h2>
+            <div class="max-w-4xl mx-auto space-y-12">
+                
+                <!-- Experiência 1: AI Engineer (Atual) -->
+                <div class="bg-gray-800 p-6 sm:p-8 rounded-xl shadow-xl border border-gray-700">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <h3 class="text-2xl font-bold text-white">AI Engineer</h3>
+                            <p class="text-teal-400 text-lg">Horizon</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-sm text-gray-400 font-semibold">Set de 2025 – o momento (3 meses)</p>
+                            <p class="text-sm text-gray-500">Remota</p>
+                        </div>
+                    </div>
+                    <!-- Texto da Experiência (Sem Asteriscos) -->
+                    <p class="text-gray-300 space-y-4">
+                        Na minha função como AI Engineer, construo soluções de ponta a ponta que aplicam inteligência artificial para gerar impacto social positivo, em linha com os ODS da ONU. Minha abordagem técnica se baseia em Python para desenvolver sistemas inteligentes com LLMs, utilizando a técnica de RAG e o banco de dados vetorial Qdrant para garantir respostas precisas e contextuais. Asseguro que as soluções sejam robustas, escaláveis e prontas para produção através de práticas de MLOps com Git, Docker e Microsoft Azure.
+                    </p>
+                    <div class="mt-4 flex flex-wrap gap-2">
+                        <span class="text-xs font-semibold bg-gray-700 text-white px-3 py-1 rounded-full">LLMs</span>
+                        <span class="text-xs font-semibold bg-gray-700 text-white px-3 py-1 rounded-full">RAG</span>
+                        <span class="text-xs font-semibold bg-gray-700 text-white px-3 py-1 rounded-full">MLOps</span>
+                        <span class="text-xs font-semibold bg-gray-700 text-white px-3 py-1 rounded-full">Azure</span>
+                        <span class="text-xs font-semibold bg-gray-700 text-white px-3 py-1 rounded-full">Python</span>
+                        <span class="text-xs font-semibold bg-gray-700 text-white px-3 py-1 rounded-full">Git</span>
+                    </div>
+                </div>
+
+                <!-- Experiência 2: Operations Assistant (Manter a anterior do currículo como histórico) -->
+                <div class="bg-gray-800 p-6 sm:p-8 rounded-xl shadow-xl border border-gray-700 opacity-75">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <h3 class="text-2xl font-bold text-white">Operations Assistant</h3>
+                            <p class="text-teal-400 text-lg">Empresa de Logística/Operações</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-sm text-gray-400 font-semibold">Fev 2024 – Presente</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-300">
+                        Profissional versátil e dinâmico com experiência em suporte a atividades operacionais, organização e verificação de materiais, assegurando precisão e disponibilidade. Atuou na manutenção da ordem e limpeza do ambiente de trabalho para melhorar a segurança e a eficiência, e assistiu na logística interna para garantir um fluxo suave de recursos.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Seção Habilidades Técnicas -->
         <section id="skills" class="py-20 border-t border-gray-800">
             <h2 class="text-3xl sm:text-4xl font-bold text-center mb-12 text-teal-400 flex items-center justify-center">
                 <i data-lucide="settings-2" class="h-8 w-8 mr-3"></i> Habilidades Técnicas
             </h2>
             <div class="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6">
-                <!-- Card de Habilidade 1 -->
+                
+                <!-- Card de Habilidade 1: Linguagens & Core -->
                 <div class="bg-gray-800 p-6 rounded-xl text-center shadow-lg border border-gray-700 hover:border-teal-400 transition duration-300">
                     <i data-lucide="code" class="h-8 w-8 text-teal-400 mx-auto mb-3"></i>
-                    <h3 class="text-xl font-semibold mb-1">Front-End</h3>
-                    <p class="text-gray-400">HTML5, CSS3, JavaScript (ES6+), React, Vue.js, Tailwind CSS</p>
+                    <h3 class="text-xl font-semibold mb-1">Linguagens & Core</h3>
+                    <p class="text-gray-400 text-sm">Python (Avançado, PEPs), SQL, R, Java, Pandas, NumPy, GIT (Versionamento)</p>
                 </div>
-                <!-- Card de Habilidade 2 -->
+                
+                <!-- Card de Habilidade 2: Machine Learning & Estatística -->
                 <div class="bg-gray-800 p-6 rounded-xl text-center shadow-lg border border-gray-700 hover:border-teal-400 transition duration-300">
-                    <i data-lucide="server" class="h-8 w-8 text-teal-400 mx-auto mb-3"></i>
-                    <h3 class="text-xl font-semibold mb-1">Back-End</h3>
-                    <p class="text-gray-400">Node.js, Python (Django/Flask), APIs RESTful, GraphQL</p>
+                    <i data-lucide="brain" class="h-8 w-8 text-teal-400 mx-auto mb-3"></i>
+                    <h3 class="text-xl font-semibold mb-1">ML, DL & Estatística</h3>
+                    <p class="text-gray-400 text-sm">Scikit-learn, TensorFlow, PyTorch, XGBoost, LightGBM, Testes de Hipóteses, SHAP/LIME</p>
                 </div>
-                <!-- Card de Habilidade 3 -->
+                
+                <!-- Card de Habilidade 3: Big Data & Engenharia -->
                 <div class="bg-gray-800 p-6 rounded-xl text-center shadow-lg border border-gray-700 hover:border-teal-400 transition duration-300">
                     <i data-lucide="database" class="h-8 w-8 text-teal-400 mx-auto mb-3"></i>
-                    <h3 class="text-xl font-semibold mb-1">Banco de Dados</h3>
-                    <p class="text-gray-400">PostgreSQL, MongoDB, MySQL, Firebase Firestore</p>
+                    <h3 class="text-xl font-semibold mb-1">Big Data & Engenharia</h3>
+                    <p class="text-gray-400 text-sm">Spark, Hadoop, PySpark, Docker, Kubernetes, ETL/ELT (Airflow, DBT, Data Factory)</p>
                 </div>
-                <!-- Card de Habilidade 4 -->
+                
+                <!-- Card de Habilidade 4: MLOps, Cloud & IA Generativa -->
                 <div class="bg-gray-800 p-6 rounded-xl text-center shadow-lg border border-gray-700 hover:border-teal-400 transition duration-300">
-                    <i data-lucide="git-fork" class="h-8 w-8 text-teal-400 mx-auto mb-3"></i>
-                    <h3 class="text-xl font-semibold mb-1">Ferramentas</h3>
-                    <p class="text-gray-400">Git, Docker, VS Code, GitHub, Metodologias Ágeis</p>
+                    <i data-lucide="rocket" class="h-8 w-8 text-teal-400 mx-auto mb-3"></i>
+                    <h3 class="text-xl font-semibold mb-1">MLOps & IA Generativa</h3>
+                    <p class="text-gray-400 text-sm">Databricks, MLFlow, APIs (FastAPI/Flask), LLMs, Agentes de IA, GCP, Azure, AWS</p>
                 </div>
             </div>
         </section>
 
-        <!-- Seção Projetos -->
+        <!-- NOVA SEÇÃO: Habilidades Gerais (Soft Skills e Idiomas) -->
+        <section id="soft-skills-languages" class="py-20 border-t border-gray-800">
+            <h2 class="text-3xl sm:text-4xl font-bold text-center mb-12 text-teal-400 flex items-center justify-center">
+                <i data-lucide="zap" class="h-8 w-8 mr-3"></i> Habilidades Gerais
+            </h2>
+            <div class="max-w-4xl mx-auto grid md:grid-cols-2 gap-8">
+                
+                <!-- Card Soft Skills -->
+                <div class="bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-700">
+                    <h3 class="text-2xl font-semibold mb-4 text-white flex items-center">
+                        <i data-lucide="users" class="h-6 w-6 mr-2 text-teal-400"></i> Soft Skills
+                    </h3>
+                    <ul class="space-y-2 text-gray-300">
+                        <li class="flex items-start">
+                            <i data-lucide="check-circle" class="h-5 w-5 mr-2 text-teal-400 mt-1 flex-shrink-0"></i>
+                            <div>
+                                <span class="font-semibold">Pensamento Analítico e Resolução de Problemas:</span> Habilidade crítica para abordar desafios complexos baseados em dados.
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <i data-lucide="check-circle" class="h-5 w-5 mr-2 text-teal-400 mt-1 flex-shrink-0"></i>
+                            <div>
+                                <span class="font-semibold">Comunicação e Escuta Ativa:</span> Capacidade de interagir com stakeholders e áreas de negócio, traduzindo insights técnicos.
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <i data-lucide="check-circle" class="h-5 w-5 mr-2 text-teal-400 mt-1 flex-shrink-0"></i>
+                            <div>
+                                <span class="font-semibold">Organização e Adaptabilidade:</span> Essencial para gerenciar projetos de MLOps em ambientes de ritmo acelerado.
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <i data-lucide="check-circle" class="h-5 w-5 mr-2 text-teal-400 mt-1 flex-shrink-0"></i>
+                            <div>
+                                <span class="font-semibold">Inteligência Emocional:</span> Essencial para o trabalho em equipe e colaboração multidisciplinar.
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Card Idiomas -->
+                <div class="bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-700">
+                    <h3 class="text-2xl font-semibold mb-4 text-white flex items-center">
+                        <i data-lucide="globe" class="h-6 w-6 mr-2 text-teal-400"></i> Idiomas
+                    </h3>
+                    
+                    <div class="mb-4">
+                        <p class="text-lg font-medium text-white">Português (Nativo)</p>
+                    </div>
+
+                    <div class="mb-4">
+                        <p class="text-lg font-medium text-white">Inglês (B2 - Intermediário Avançado)</p>
+                        <p class="text-sm text-gray-400 mb-1">Em estudo contínuo para proficiência.</p>
+                        <div class="progress-bar">
+                            <!-- B2 é geralmente 70-80% do progresso. Usando 75% -->
+                            <div class="progress-fill" style="width: 75%;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção Projetos (Foco no Repositório GitHub Específico) -->
         <section id="projects" class="py-20 border-t border-gray-800">
             <h2 class="text-3xl sm:text-4xl font-bold text-center mb-12 text-teal-400 flex items-center justify-center">
-                <i data-lucide="folder-open" class="h-8 w-8 mr-3"></i> Meus Projetos
+                <i data-lucide="folder-open" class="h-8 w-8 mr-3"></i> Projetos
+            </h2>
+            <div class="max-w-4xl mx-auto text-center bg-gray-800 p-8 rounded-xl shadow-xl border border-gray-700">
+                <!-- TEXTO ALTERADO -->
+                <p class="text-xl text-gray-300 mb-6">
+                    Meu trabalho detalhado, incluindo estudos de caso e projetos de Machine Learning, LLMs e IA Generativa, está disponível no meu repositório de projetos do GitHub.
+                </p>
+                <a href="https://github.com/Goldoni17/projetos" target="_blank" class="btn-primary inline-flex items-center">
+                    <i data-lucide="github" class="inline-block h-5 w-5 mr-2"></i> Acessar Repositório Projetos
+                </a>
+            </div>
+        </section>
+        
+        <!-- SEÇÃO: Formação Acadêmica -->
+        <section id="academic-formations" class="py-20 border-t border-gray-800">
+            <h2 class="text-3xl sm:text-4xl font-bold text-center mb-12 text-teal-400 flex items-center justify-center">
+                <i data-lucide="school" class="h-8 w-8 mr-3"></i> Formação Acadêmica
             </h2>
 
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Projeto 1 -->
-                <div class="project-card p-6 rounded-xl shadow-xl">
+            <div class="grid md:grid-cols-2 lg:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                
+                <!-- Graduação (Primeiro Item) -->
+                <div class="project-card p-6 rounded-xl shadow-xl text-center">
                     <div class="h-40 bg-gray-700 rounded-lg mb-4 flex items-center justify-center text-gray-400">
-                        <i data-lucide="laptop" class="h-10 w-10"></i>
+                        <i data-lucide="university" class="h-10 w-10"></i>
                     </div>
-                    <h3 class="text-2xl font-semibold mb-2 text-white">Sistema de Gerenciamento XYZ</h3>
-                    <p class="text-gray-400 mb-4">Aplicação web completa para gestão de tarefas internas, desenvolvida com React e Node.js.</p>
-                    <div class="flex flex-wrap gap-2 mb-4">
-                        <span class="text-sm bg-teal-800 text-teal-100 px-3 py-1 rounded-full">React</span>
-                        <span class="text-sm bg-teal-800 text-teal-100 px-3 py-1 rounded-full">Node.js</span>
-                        <span class="text-sm bg-teal-800 text-teal-100 px-3 py-1 rounded-full">MongoDB</span>
-                    </div>
-                    <a href="https://github.com/seuusuario/projeto1" target="_blank" class="project-link flex items-center">
-                        Ver no GitHub <i data-lucide="arrow-right" class="h-4 w-4 ml-1"></i>
-                    </a>
+                    <h3 class="text-2xl font-semibold mb-2 text-white">Bacharelado em Data Science: Big Data e BI</h3>
+                    <p class="text-gray-400 mb-4">Universidade São Judas Tadeu</p>
+                    <p class="text-md font-medium text-teal-400">2023 — 2025</p>
                 </div>
 
-                <!-- Projeto 2 -->
-                <div class="project-card p-6 rounded-xl shadow-xl">
+                <!-- Ensino Médio -->
+                <div class="project-card p-6 rounded-xl shadow-xl text-center">
                     <div class="h-40 bg-gray-700 rounded-lg mb-4 flex items-center justify-center text-gray-400">
-                        <i data-lucide="smartphone" class="h-10 w-10"></i>
+                        <i data-lucide="book-open-check" class="h-10 w-10"></i>
                     </div>
-                    <h3 class="text-2xl font-semibold mb-2 text-white">Landing Page de SaaS</h3>
-                    <p class="text-gray-400 mb-4">Página de alta conversão para lançamento de software, com design responsivo e animações em CSS puro.</p>
-                    <div class="flex flex-wrap gap-2 mb-4">
-                        <span class="text-sm bg-teal-800 text-teal-100 px-3 py-1 rounded-full">HTML</span>
-                        <span class="text-sm bg-teal-800 text-teal-100 px-3 py-1 rounded-full">Tailwind CSS</span>
-                        <span class="text-sm bg-teal-800 text-teal-100 px-3 py-1 rounded-full">JavaScript</span>
-                    </div>
-                    <a href="https://github.com/seuusuario/projeto2" target="_blank" class="project-link flex items-center">
-                        Ver no GitHub <i data-lucide="arrow-right" class="h-4 w-4 ml-1"></i>
-                    </a>
-                </div>
-
-                <!-- Projeto 3 -->
-                <div class="project-card p-6 rounded-xl shadow-xl">
-                    <div class="h-40 bg-gray-700 rounded-lg mb-4 flex items-center justify-center text-gray-400">
-                        <i data-lucide="gamepad" class="h-10 w-10"></i>
-                    </div>
-                    <h3 class="text-2xl font-semibold mb-2 text-white">Jogo Simples em JS</h3>
-                    <p class="text-gray-400 mb-4">Pequeno jogo casual desenvolvido apenas com JavaScript puro e Canvas para demonstração de lógica.</p>
-                    <div class="flex flex-wrap gap-2 mb-4">
-                        <span class="text-sm bg-teal-800 text-teal-100 px-3 py-1 rounded-full">JavaScript</span>
-                        <span class="text-sm bg-teal-800 text-teal-100 px-3 py-1 rounded-full">Canvas API</span>
-                    </div>
-                    <a href="https://github.com/seuusuario/projeto3" target="_blank" class="project-link flex items-center">
-                        Ver no GitHub <i data-lucide="arrow-right" class="h-4 w-4 ml-1"></i>
-                    </a>
+                    <h3 class="text-2xl font-semibold mb-2 text-white">Ensino Médio</h3>
+                    <p class="text-gray-400 mb-4">E.E.E.I. Papa Paulo VI</p>
+                    <p class="text-md font-medium text-teal-400">Concluído em 2018</p>
                 </div>
             </div>
         </section>
+
+        <!-- SEÇÃO: Certificados (AGORA EM FORMATO DE LISTA) -->
+        <section id="certificates" class="py-20 border-t border-gray-800">
+            <h2 class="text-3xl sm:text-4xl font-bold text-center mb-12 text-teal-400 flex items-center justify-center">
+                <i data-lucide="award" class="h-8 w-8 mr-3"></i> Certificados
+            </h2>
+
+            <!-- Lista de Certificados -->
+            <div class="max-w-4xl mx-auto space-y-4">
+                
+                <!-- Item 1 -->
+                <div class="certificate-item">
+                    <div class="flex items-center">
+                        <i data-lucide="award" class="h-6 w-6 mr-4 text-teal-400 flex-shrink-0"></i>
+                        <div>
+                            <p class="text-lg font-semibold text-white">Data Science Complete Formation</p>
+                            <p class="text-sm text-gray-400">Udemy</p>
+                        </div>
+                    </div>
+                    <p class="certificate-date text-sm font-medium text-teal-400 flex-shrink-0">Set 2025</p>
+                </div>
+
+                <!-- Item 2 -->
+                <div class="certificate-item">
+                    <div class="flex items-center">
+                        <i data-lucide="award" class="h-6 w-6 mr-4 text-teal-400 flex-shrink-0"></i>
+                        <div>
+                            <p class="text-lg font-semibold text-white">Introduction to Machine Learning</p>
+                            <p class="text-sm text-gray-400">DATA</p>
+                        </div>
+                    </div>
+                    <p class="certificate-date text-sm font-medium text-teal-400 flex-shrink-0">Jun 2025</p>
+                </div>
+
+                <!-- Item 3 -->
+                <div class="certificate-item">
+                    <div class="flex items-center">
+                        <i data-lucide="award" class="h-6 w-6 mr-4 text-teal-400 flex-shrink-0"></i>
+                        <div>
+                            <p class="text-lg font-semibold text-white">Data Analyst Professional</p>
+                            <p class="text-sm text-gray-400">EBAC</p>
+                        </div>
+                    </div>
+                    <p class="certificate-date text-sm font-medium text-teal-400 flex-shrink-0">Fev 2024</p>
+                </div>
+
+                <!-- Item 4 -->
+                <div class="certificate-item">
+                    <div class="flex items-center">
+                        <i data-lucide="award" class="h-6 w-6 mr-4 text-teal-400 flex-shrink-0"></i>
+                        <div>
+                            <p class="text-lg font-semibold text-white">Introduction to Data Science</p>
+                            <p class="text-sm text-gray-400">Cisco</p>
+                        </div>
+                    </div>
+                    <p class="certificate-date text-sm font-medium text-teal-400 flex-shrink-0">Abr 2025</p>
+                </div>
+
+                <!-- Item 5 -->
+                <div class="certificate-item">
+                    <div class="flex items-center">
+                        <i data-lucide="award" class="h-6 w-6 mr-4 text-teal-400 flex-shrink-0"></i>
+                        <div>
+                            <p class="text-lg font-semibold text-white">Data Analyst Formation</p>
+                            <p class="text-sm text-gray-400">Data Science Academy</p>
+                        </div>
+                    </div>
+                    <p class="certificate-date text-sm font-medium text-teal-400 flex-shrink-0">Dez 2024</p>
+                </div>
+                
+                <!-- Item 6 -->
+                <div class="certificate-item">
+                    <div class="flex items-center">
+                        <i data-lucide="award" class="h-6 w-6 mr-4 text-teal-400 flex-shrink-0"></i>
+                        <div>
+                            <p class="text-lg font-semibold text-white">Google Cloud Foundations</p>
+                            <p class="text-sm text-gray-400">Google</p>
+                        </div>
+                    </div>
+                    <p class="certificate-date text-sm font-medium text-teal-400 flex-shrink-0">Mar 2023</p>
+                </div>
+                
+                <!-- Adicione mais certificados aqui conforme for realizando -->
+                <div class="certificate-item opacity-50">
+                    <div class="flex items-center">
+                        <i data-lucide="award" class="h-6 w-6 mr-4 text-teal-400 flex-shrink-0"></i>
+                        <div>
+                            <p class="text-lg font-semibold text-white">Novo Certificado (Exemplo)</p>
+                            <p class="text-sm text-gray-400">Instituição</p>
+                        </div>
+                    </div>
+                    <p class="certificate-date text-sm font-medium text-teal-400 flex-shrink-0">Mês Ano</p>
+                </div>
+
+            </div>
+        </section>
+
 
         <!-- Seção Contato -->
         <section id="contact" class="py-20 border-t border-gray-800">
@@ -248,20 +493,24 @@
             </h2>
             <div class="max-w-2xl mx-auto text-center bg-gray-800 p-8 rounded-xl shadow-xl border border-gray-700">
                 <p class="text-lg text-gray-300 mb-6">
-                    Tem um projeto em mente ou apenas quer trocar uma ideia? Sinta-se à vontade para me contatar.
+                    Se você tiver oportunidades na área de Data Science, Machine Learning ou Big Data, por favor, entre em contato.
                 </p>
                 <div class="space-y-4">
                     <p class="text-xl font-medium text-white">
                         <i data-lucide="mail" class="inline-block h-5 w-5 mr-2 text-teal-400"></i>
-                        E-mail: <a href="mailto:seuemail@exemplo.com" class="text-teal-400 hover:underline">seuemail@exemplo.com</a>
+                        E-mail: <a href="mailto:goldoniguilherme15@gmail.com" class="text-teal-400 hover:underline">goldoniguilherme15@gmail.com</a>
+                    </p>
+                    <p class="text-xl font-medium text-white">
+                        <i data-lucide="phone" class="inline-block h-5 w-5 mr-2 text-teal-400"></i>
+                        Celular: <a href="tel:+5511978340467" class="text-teal-400 hover:underline">+55 11 97834-0467</a>
                     </p>
                     <p class="text-xl font-medium text-white">
                         <i data-lucide="linkedin" class="inline-block h-5 w-5 mr-2 text-teal-400"></i>
-                        LinkedIn: <a href="https://linkedin.com/in/seuusuario" target="_blank" class="text-teal-400 hover:underline">/in/seuusuario</a>
+                        LinkedIn: <a href="https://www.linkedin.com/in/guilherme-goldoni-942724238" target="_blank" class="text-teal-400 hover:underline">/in/guilherme-goldoni-942724238</a>
                     </p>
                     <p class="text-xl font-medium text-white">
                         <i data-lucide="github" class="inline-block h-5 w-5 mr-2 text-teal-400"></i>
-                        GitHub: <a href="https://github.com/seuusuario" target="_blank" class="text-teal-400 hover:underline">/seuusuario</a>
+                        GitHub: <a href="https://github.com/Goldoni17" target="_blank" class="text-teal-400 hover:underline">/Goldoni17</a>
                     </p>
                 </div>
             </div>
@@ -269,9 +518,9 @@
 
     </main>
 
-    <!-- Rodapé -->
+    <!-- Rodapé Corrigido -->
     <footer class="mt-20 py-8 border-t border-gray-800 text-center text-gray-500">
-        <p>&copy; 2025 Seu Nome. Desenvolvido com <span class="text-red-500">&hearts;</span> e Tailwind CSS.</p>
+        <p>&copy; 2025 Guilherme Goldoni.</p>
     </footer>
 
     <script>
