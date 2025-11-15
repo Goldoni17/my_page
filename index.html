@@ -1,4 +1,6 @@
-<head>
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
@@ -11,66 +13,30 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
         <link href="css/styles.css" rel="stylesheet" />
         <style>
-   /* ---------- IMAGENS DOS CARDS (mesmo tamanho) ---------- */
-.card-img-top {
-    width: 100%;       /* ocupa toda a largura do card */
-    height: 175px;     /* altura fixa, como antes */
-    object-fit: cover; /* recorta/ajusta proporcionalmente */
-}
+            /* ---------- IMAGENS DOS CARDS (mesmo tamanho) ---------- */
+            .card-img-top {
+                width: 100%;
+                height: 175px; /* Altura fixa para a imagem */
+                object-fit: cover; /* Garante que a imagem cubra o espaço */
+            }
 
-/* ---------- CORPO DO CARD (mesma altura total e itens bem posicionados) ---------- */
-.card {
-    height: 470px;          /* garante cards todos com mesma altura */
-    display: flex;
-    flex-direction: column;
-}
+            /* ---------- CORPO DO CARD (mesma altura total) ---------- */
+            .card {
+                height: 470px; /* Altura total fixa para todos os cards */
+            }
+            
+            .card-body {
+                display: flex;
+                flex-direction: column; /* Organiza o conteúdo verticalmente */
+            }
+            
+            .card-body .card-text {
+                font-size: 0.95rem;
+                line-height: 1.3;
+            }
 
-/* Data sempre no topo */
-.card-body .project-date {
-    flex-shrink: 0;
-    margin-bottom: 0.5rem;
-    font-size: 0.9rem;
-    color: #555;
-    min-height: 20px; /* ajuste conforme necessidade */
-}
-
-/* Título com altura mínima */
-.card-body .card-title {
-    flex-shrink: 0;
-    margin-bottom: 0.5rem;
-    min-height: 48px; /* ajusta conforme o tamanho médio dos títulos */
-    display: flex;
-    align-items: center; /* centraliza verticalmente, se quiser */
-}
-
-
-/* Descrição ocupa espaço central */
-.card-body > p.card-text:not(.text-muted) {
-    flex-grow: 1;
-    overflow: hidden;
-    margin-bottom: 0.75rem;
-    font-size: 0.95rem;
-    line-height: 1.3;
-    min-height: 80px; /* evita colapsar quando for pequeno */
-}
-
-/* Categoria fixa acima do botão */
-.card-body .project-category {
-    flex-shrink: 0;
-    margin-bottom: 0.5rem;
-    font-weight: bold;
-    color: #555;
-    min-height: 20px; /* ajuda no alinhamento */
-}
-
-/* Botão na parte inferior */
-.card-body .btn {
-    flex-shrink: 0;
-}
-
-</style>
-    </head>
-
+            /* O container do botão usará 'mt-auto' no JS para ficar no fundo */
+        </style>
     </head>
     <body id="page-top">
         <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top" id="sideNav">
@@ -85,7 +51,7 @@
                     <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#projects">Projects</a></li>
                     <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#education">Education</a></li>
                     <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#skills">Skills</a></li>
-                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#awards">Awards</a></li>
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#certifications">Certifications</a></li>
                 </ul>
             </div>
         </nav>
@@ -115,280 +81,309 @@
                 </div>
             </section>
             <hr class="m-0" />
-           <!-- Project Section -->
-<section class="resume-section" id="projects">
-    <div class="resume-section-content">
-        <h2 class="mb-5">My Latest Projects</h2>
-        <p class="mb-5">Take a look at my recent work.</p>
+            <section class="resume-section" id="projects">
+                <div class="resume-section-content">
+                    <h2 class="mb-5">My Latest Projects</h2>
+                    <p class="mb-5">Take a look at my recent work.</p>
 
-        <div class="mb-4">
-            <label for="categoryFilter" class="form-label">Filter by category:</label>
-            <select id="categoryFilter" class="form-select">
-                <option value="all">All</option>
-            </select>
+                    <div class="mb-4">
+                        <label for="categoryFilter" class="form-label">Filter by category:</label>
+                        <select id="categoryFilter" class="form-select">
+                            <option value="all">All</option>
+                        </select>
+                    </div>
+
+                    <div id="github-projects" class="row"></div>
+
+                    <div class="text-center mt-4">
+                        <button id="seeMoreBtn" class="btn btn-secondary">See more projects</button>
+                    </div>
+                </div>
+            </section>
+            <hr class="m-0" />
+            <section class="resume-section" id="education">
+                <div class="resume-section-content">
+                    <h2 class="mb-5">Education</h2>
+                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                        <div class="flex-grow-1">
+                            <h3 class="mb-0">Universidade São Judas Tadeu</h3>
+                            <div class="subheading mb-3">Bachelor of Technology</div>
+                            <div>Banco de Dados - Data Science, Big Data e BI</div>
+                        </div>
+                        <div class="flex-shrink-0"><span class="text-primary">August 2023 - December 2025</span></div>
+                    </div>
+                </div>
+            </section>
+            <hr class="m-0" />
+            <section class="resume-section" id="skills">
+                <div class="resume-section-content">
+                    <h2 class="mb-5">Skills</h2>
+                    <div class="subheading mb-3">Programming Languages & Tools</div>
+                    <ul class="list-inline dev-icons">
+                        <li class="list-inline-item"><img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/python/python-original.svg" alt="Python" title="Python" width="40" height="40"></li>
+                        <li class="list-inline-item"><img src="https://raw.githubusercontent.com/valohai/ml-logos/master/pandas.svg" alt="Pandas" title="Pandas" width="40" height="40"></li>
+                        <li class="list-inline-item"><img src="https://raw.githubusercontent.com/valohai/ml-logos/master/numpy.svg" alt="NumPy" title="NumPy" width="40" height="40"></li>
+                        <li class="list-inline-item"><img src="https://cdn-icons-png.flaticon.com/512/4248/4248443.png" alt="SQL" title="SQL" width="40" height="40"></li>
+                        <li class="list-inline-item"><img src="https://cdn-icons-png.flaticon.com/512/732/732220.png" alt="Excel" title="Excel" width="40" height="40"></li>
+                        <li class="list-inline-item"><img src="https://www.r-project.org/logo/Rlogo.png" alt="R" title="R" width="40" height="40"></li>
+                        <li class="list-inline-item"><img src="https://upload.wikimedia.org/wikipedia/commons/3/38/Jupyter_logo.svg" alt="Jupyter Notebooks" title="Jupyter Notebooks" width="40" height="40"></li>
+                        <li class="list-inline-item"><img src="https://raw.githubusercontent.com/valohai/ml-logos/master/scikit-learn.svg" alt="Scikit-learn" title="Scikit-learn" width="40" height="40"></li>
+                    </ul>
+                    <div class="subheading mb-3">Workflow</div>
+                    <ul class="fa-ul mb-0">
+                        <li><span class="fa-li"><i class="fas fa-check"></i></span>Data Analysis, Cleaning and Visualization</li>
+                        <li><span class="fa-li"><i class="fas fa-check"></i></span>Machine Learning and Statistics</li>
+                        <li><span class="fa-li"><i class="fas fa-check"></i></span>Cloud</li>
+                        <li><span class="fa-li"><i class="fas fa-check"></i></span>Business Intelligence</li>
+                    </ul>
+                </div>
+            </section>
+            <hr class="m-0" />
+            <section class="resume-section" id="certifications">
+                <div class="resume-section-content">
+                    <h2 class="mb-5">Certifications</h2>
+                    <ul class="fa-ul mb-0">
+                        <li><span class="fa-li"><i class="fas fa-trophy text-warning"></i></span>Formação Analista de Dados - DSA</li>
+                        <li><span class="fa-li"><i class="fas fa-trophy text-warning"></i></span>Fundamentos de Linguagem Python para Análise de Dados e Data Science - DSA</li>
+                        <li><span class="fa-li"><i class="fas fa-trophy text-warning"></i></span>Introduction to Data Science - Cisco</li>
+                        <li><span class="fa-li"><i class="fas fa-trophy text-warning"></i></span>Google Cloud Foundations - Google</li>
+                    </ul>
+                </div>
+            </section>
         </div>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="js/scripts.js"></script>
+        
+        <script>
+            const username = "Goldoni17";
+            const repo = "projetos";
+            const baseUrl = `https://api.github.com/repos/${username}/${repo}/contents`;
+            const container = document.getElementById("github-projects");
+            const filterSelect = document.getElementById("categoryFilter");
+            const seeMoreBtn = document.getElementById("seeMoreBtn");
 
-        <div id="github-projects" class="row"></div>
+            let allProjects = [];
+            let categories = new Set();
+            let displayedCount = 0;
+            const batchSize = 3;
 
-        <div class="text-center mt-4">
-            <button id="seeMoreBtn" class="btn btn-secondary">See more projects</button>
-        </div>
-    </div>
-</section>
-              <hr class="m-0" />
-              <section class="resume-section" id="education">
-                  <div class="resume-section-content">
-                      <h2 class="mb-5">Education</h2>
-                      <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
-                          <div class="flex-grow-1">
-                              <h3 class="mb-0">Universidade São Judas Tadeu</h3>
-                              <div class="subheading mb-3">Bachelor of Technology</div>
-                              <div>Banco de Dados - Data Science, Big Data e BI</div>
-                          </div>
-                          <div class="flex-shrink-0"><span class="text-primary">August 2023 - December 2025</span></div>
-                      </div>
-                  </div>
-              </section>
-              <hr class="m-0" />
-              <section class="resume-section" id="skills">
-                  <div class="resume-section-content">
-                      <h2 class="mb-5">Skills</h2>
-                      <div class="subheading mb-3">Programming Languages & Tools</div>
-                      <ul class="list-inline dev-icons">
-                          <li class="list-inline-item"><img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/python/python-original.svg" alt="Python" title="Python" width="40" height="40"></li>
-                          <li class="list-inline-item"><img src="https://raw.githubusercontent.com/valohai/ml-logos/master/pandas.svg" alt="Pandas" title="Pandas" width="40" height="40"></li>
-                          <li class="list-inline-item"><img src="https://raw.githubusercontent.com/valohai/ml-logos/master/numpy.svg" alt="NumPy" title="NumPy" width="40" height="40"></li>
-                          <li class="list-inline-item"><img src="https://cdn-icons-png.flaticon.com/512/4248/4248443.png" alt="SQL" title="SQL" width="40" height="40"></li>
-                          <li class="list-inline-item"><img src="https://cdn-icons-png.flaticon.com/512/732/732220.png" alt="Excel" title="Excel" width="40" height="40"></li>
-                          <li class="list-inline-item"><img src="https://www.r-project.org/logo/Rlogo.png" alt="R" title="R" width="40" height="40"></li>
-                          <li class="list-inline-item"><img src="https://upload.wikimedia.org/wikipedia/commons/3/38/Jupyter_logo.svg" alt="Jupyter Notebooks" title="Jupyter Notebooks" width="40" height="40"></li>
-                          <li class="list-inline-item"><img src="https://raw.githubusercontent.com/valohai/ml-logos/master/scikit-learn.svg" alt="Scikit-learn" title="Scikit-learn" width="40" height="40"></li>
-                      </ul>
-                      <div class="subheading mb-3">Workflow</div>
-                      <ul class="fa-ul mb-0">
-                          <li><span class="fa-li"><i class="fas fa-check"></i></span>Data Analysis, Cleaning and Visualization</li>
-                          <li><span class="fa-li"><i class="fas fa-check"></i></span>Machine Learning and Statistics</li>
-                          <li><span class="fa-li"><i class="fas fa-check"></i></span>Cloud</li>
-                          <li><span class="fa-li"><i class="fas fa-check"></i></span>Business Intelligence</li>
-                      </ul>
-                  </div>
-              </section>
-              <hr class="m-0" />
-              <section class="resume-section" id="awards">
-                  <div class="resume-section-content">
-                      <h2 class="mb-5">Awards & Certifications</h2>
-                      <ul class="fa-ul mb-0">
-                          <li><span class="fa-li"><i class="fas fa-trophy text-warning"></i></span>Formação Analista de Dados - DSA</li>    
-                          <li><span class="fa-li"><i class="fas fa-trophy text-warning"></i></span>Fundamentos de Linguagem Python para Análise de Dados e Data Science - DSA</li>
-                          <li><span class="fa-li"><i class="fas fa-trophy text-warning"></i></span>Introduction to Data Science - Cisco</li>
-                          <li><span class="fa-li"><i class="fas fa-trophy text-warning"></i></span>Google Cloud Foundations - Google</li>
-                      </ul>
-                  </div>
-              </section>
-          </div>
-            
-          <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="js/scripts.js"></script>
-<script>
-    const username = "Goldoni17";
-    const repo = "projetos";
-    const baseUrl = `https://api.github.com/repos/${username}/${repo}/contents`;
-    const container = document.getElementById("github-projects");
-    const filterSelect = document.getElementById("categoryFilter");
-    const seeMoreBtn = document.getElementById("seeMoreBtn");
+            async function fetchDirectoryFiles(url) {
+                const response = await fetch(url);
+                return await response.json();
+            }
 
-    let allProjects = [];
-    let categories = new Set();
-    let displayedCount = 0;
-    const batchSize = 3;
+            async function fetchRawContent(url) {
+                const response = await fetch(url);
+                if (response.ok) {
+                    return await response.text();
+                }
+                return null;
+            }
 
-    async function fetchDirectoryFiles(url) {
-        const response = await fetch(url);
-        return await response.json();
-    }
+            async function loadProjects() {
+                try {
+                    const response = await fetch(baseUrl);
+                    const files = await response.json();
 
-    async function fetchRawContent(url) {
-        const response = await fetch(url);
-        if (response.ok) {
-            return await response.text();
-        }
-        return null;
-    }
+                    for (const file of files) {
+                        if (file.type === "dir") {
+                            const projectFiles = await fetchDirectoryFiles(`${baseUrl}/${file.name}`);
 
-    async function loadProjects() {
-        try {
-            const response = await fetch(baseUrl);
-            const files = await response.json();
-
-            for (const file of files) {
-                if (file.type === "dir") {
-                    const projectFiles = await fetchDirectoryFiles(`${baseUrl}/${file.name}`);
-
-                    // 1) Categoria (suporta múltiplas)
-                    let category = ["Uncategorized"];
-                    const categoryFile = projectFiles.find(f => f.name === "category.txt");
-                    if (categoryFile) {
-                        const categoryUrl = categoryFile.download_url;
-                        const categoryContent = await fetchRawContent(categoryUrl);
-                        if (categoryContent) {
-                            category = categoryContent
-                                .split(/[\n,]+/) // separa por vírgula ou quebra de linha
-                                .map(c => c.trim())
-                                .filter(c => c);
-                        }
-                    }
-
-                    // 2) Descrição
-                    let description = "No description available.";
-                    const readmeFile = projectFiles.find(f => f.name.toLowerCase() === "readme.md");
-                    if (readmeFile) {
-                        const readmeUrl = readmeFile.download_url;
-                        const readmeContent = await fetchRawContent(readmeUrl);
-                        if (readmeContent) {
-                            description = readmeContent.split('\n')[0];
-                        }
-                    }
-
-                    // 3) Imagem de capa
-                    const coverFile = projectFiles.find(f =>
-                        f.name.toLowerCase() === "cover.jpg" || f.name.toLowerCase() === "cover.png"
-                    );
-                    const coverUrl = coverFile ? coverFile.download_url : null;
-
-                    // 4) Notebook
-                    const notebookFile = projectFiles.find(f => f.name.endsWith(".ipynb"));
-                    if (notebookFile) {
-                        const notebookUrl = `https://nbviewer.org/github/${username}/${repo}/blob/main/${file.name}/${notebookFile.name}`;
-
-                        // 5) Data
-                        let date = null;
-                        const dateFile = projectFiles.find(f => f.name.toLowerCase() === "date.txt");
-                        if (dateFile) {
-                            const dateUrl = dateFile.download_url;
-                            const dateContent = await fetchRawContent(dateUrl);
-                            if (dateContent) {
-                                date = dateContent.trim();
+                            // 1) Categoria
+                            let category = ["Uncategorized"];
+                            const categoryFile = projectFiles.find(f => f.name === "category.txt");
+                            if (categoryFile) {
+                                const categoryUrl = categoryFile.download_url;
+                                const categoryContent = await fetchRawContent(categoryUrl);
+                                if (categoryContent) {
+                                    category = categoryContent
+                                        .split(/[\n,]+/)
+                                        .map(c => c.trim())
+                                        .filter(c => c);
+                                }
                             }
+
+                            // 2) Descrição
+                            let description = "No description available.";
+                            const readmeFile = projectFiles.find(f => f.name.toLowerCase() === "readme.md");
+                            if (readmeFile) {
+                                const readmeUrl = readmeFile.download_url;
+                                const readmeContent = await fetchRawContent(readmeUrl);
+                                if (readmeContent) {
+                                    description = readmeContent.split('\n')[0]; 
+                                }
+                            }
+
+                            // 3) Imagem de capa
+                            const coverFile = projectFiles.find(f =>
+                                f.name.toLowerCase() === "cover.jpg" || f.name.toLowerCase() === "cover.png"
+                            );
+                            const coverUrl = coverFile ? coverFile.download_url : null;
+
+                            // 4) Data
+                            let date = null;
+                            const dateFile = projectFiles.find(f => f.name.toLowerCase() === "date.txt");
+                            if (dateFile) {
+                                const dateUrl = dateFile.download_url;
+                                const dateContent = await fetchRawContent(dateUrl);
+                                if (dateContent) {
+                                    date = dateContent.trim();
+                                }
+                            }
+
+                            // 5) [NOVO] Live Demo URL (Link Principal)
+                            let demoUrl = null;
+                            const demoFile = projectFiles.find(f => f.name.toLowerCase() === "demo_url.txt");
+                            if (demoFile) {
+                                const demoFileUrl = demoFile.download_url;
+                                const demoContent = await fetchRawContent(demoFileUrl);
+                                if (demoContent) {
+                                    demoUrl = demoContent.trim();
+                                }
+                            }
+                            
+                            // 6) [NOVO] Link do Código (Link Secundário)
+                            const codeUrl = `https://github.com/${username}/${repo}/tree/main/${file.name}`;
+
+                            // Adiciona todas as categorias ao Set
+                            category.forEach(cat => categories.add(cat));
+
+                            allProjects.push({
+                                name: file.name,
+                                demoUrl: demoUrl,       // Link para o Streamlit
+                                codeUrl: codeUrl,       // Link para o GitHub
+                                category: category,
+                                description: description,
+                                coverUrl: coverUrl,
+                                date: date
+                            });
                         }
-
-                        // Adiciona todas as categorias ao Set
-                        category.forEach(cat => categories.add(cat));
-
-                        allProjects.push({
-                            name: file.name,
-                            url: notebookUrl,
-                            category: category,  // agora é array
-                            description: description,
-                            coverUrl: coverUrl,
-                            date: date
-                        });
                     }
+
+                    // Ordenar pela data
+                    allProjects.sort((a, b) => {
+                        if (!a.date && !b.date) return 0;
+                        if (!a.date) return 1;
+                        if (!b.date) return -1;
+                        return (a.date < b.date) ? 1 : (a.date > b.date) ? -1 : 0;
+                    });
+
+                    updateFilterOptions();
+                    displayProjects("all");
+                } catch (error) {
+                    console.error("Error loading projects:", error);
                 }
             }
 
-            // Ordenar pela data
-            allProjects.sort((a, b) => {
-                if (!a.date && !b.date) return 0;
-                if (!a.date) return 1;
-                if (!b.date) return -1;
-                return (a.date < b.date) ? 1 : (a.date > b.date) ? -1 : 0;
+            function updateFilterOptions() {
+                categories.forEach(category => {
+                    const option = document.createElement("option");
+                    option.value = category;
+                    option.textContent = category;
+                    filterSelect.appendChild(option);
+                });
+
+                filterSelect.addEventListener("change", () => {
+                    displayedCount = 0;
+                    displayProjects(filterSelect.value);
+                });
+            }
+
+            function displayProjects(selectedCategory) {
+                container.innerHTML = "";
+
+                const filteredProjects = selectedCategory === "all" ?
+                    allProjects :
+                    allProjects.filter(p => p.category.includes(selectedCategory));
+
+                const projectsToShow = filteredProjects.slice(0, displayedCount + batchSize);
+
+                projectsToShow.forEach(project => {
+                    const col = document.createElement("div");
+                    col.className = "col-md-4 mb-4";
+
+                    const card = document.createElement("div");
+                    card.className = "card h-100"; // h-100 para Bootstrap garantir mesma altura
+
+                    if (project.coverUrl) {
+                        const img = document.createElement("img");
+                        img.src = project.coverUrl;
+                        img.className = "card-img-top";
+                        img.alt = project.name;
+                        card.appendChild(img);
+                    }
+
+                    const cardBody = document.createElement("div");
+                    cardBody.className = "card-body d-flex flex-column"; // Flex column
+
+                    if (project.date) {
+                        const dateEl = document.createElement("p");
+                        dateEl.className = "card-text text-muted mb-2";
+                        dateEl.textContent = `Data: ${project.date}`;
+                        cardBody.appendChild(dateEl);
+                    }
+
+                    const title = document.createElement("h5");
+                    title.className = "card-title";
+                    title.textContent = project.name;
+                    cardBody.appendChild(title);
+
+                    const description = document.createElement("p");
+                    description.className = "card-text";
+                    description.textContent = project.description;
+                    cardBody.appendChild(description);
+
+                    const categoryEl = document.createElement("p");
+                    categoryEl.className = "card-text text-muted";
+                    categoryEl.textContent = `Categoria: ${project.category.join(", ")}`;
+                    cardBody.appendChild(categoryEl);
+                    
+                    // [NOVO] Container de Botões
+                    const btnContainer = document.createElement("div");
+                    // 'mt-auto' empurra para o fundo
+                    btnContainer.className = "mt-auto d-flex flex-wrap gap-2"; 
+
+                    // Botão Principal (Demo)
+                    if (project.demoUrl) {
+                        const btnDemo = document.createElement("a");
+                        btnDemo.href = project.demoUrl;
+                        btnDemo.className = "btn btn-primary"; // Botão primário
+                        btnDemo.textContent = "Testar Projeto";
+                        btnDemo.target = "_blank";
+                        btnContainer.appendChild(btnDemo);
+                    }
+
+                    // Botão Secundário (Código)
+                    if (project.codeUrl) {
+                        const btnCode = document.createElement("a");
+                        btnCode.href = project.codeUrl;
+                        btnCode.className = "btn btn-outline-secondary"; // Botão secundário
+                        btnCode.textContent = "Ver Código";
+                        btnCode.target = "_blank";
+                        btnContainer.appendChild(btnCode);
+                    }
+                    
+                    cardBody.appendChild(btnContainer); // Adiciona o container de botões
+
+                    card.appendChild(cardBody);
+                    col.appendChild(card);
+                    container.appendChild(col);
+                });
+
+                displayedCount += batchSize;
+
+                if (displayedCount >= filteredProjects.length) {
+                    seeMoreBtn.style.display = "none";
+                } else {
+                    seeMoreBtn.style.display = "inline-block";
+                }
+            }
+
+            seeMoreBtn.addEventListener("click", () => {
+                displayProjects(filterSelect.value);
             });
 
-            updateFilterOptions();
-            displayProjects("all");
-        } catch (error) {
-            console.error("Error loading projects:", error);
-        }
-    }
-
-    function updateFilterOptions() {
-        categories.forEach(category => {
-            const option = document.createElement("option");
-            option.value = category;
-            option.textContent = category;
-            filterSelect.appendChild(option);
-        });
-
-        filterSelect.addEventListener("change", () => {
-            displayedCount = 0;
-            displayProjects(filterSelect.value);
-        });
-    }
-
-    function displayProjects(selectedCategory) {
-        container.innerHTML = "";
-
-        const filteredProjects = selectedCategory === "all" ?
-            allProjects :
-            allProjects.filter(p => p.category.includes(selectedCategory));
-
-        const projectsToShow = filteredProjects.slice(0, displayedCount + batchSize);
-
-        projectsToShow.forEach(project => {
-            const col = document.createElement("div");
-            col.className = "col-md-4 mb-4";
-
-            const card = document.createElement("div");
-            card.className = "card h-100";
-
-            if (project.coverUrl) {
-                const img = document.createElement("img");
-                img.src = project.coverUrl;
-                img.className = "card-img-top";
-                img.alt = project.name;
-                card.appendChild(img);
-            }
-
-            const cardBody = document.createElement("div");
-            cardBody.className = "card-body d-flex flex-column";
-
-            const title = document.createElement("h5");
-            title.className = "card-title";
-            title.textContent = project.name;
-
-            const description = document.createElement("p");
-            description.className = "card-text";
-            description.textContent = project.description;
-
-            const categoryEl = document.createElement("p");
-            categoryEl.className = "card-text text-muted mt-auto";
-            categoryEl.textContent = `Category: ${project.category.join(", ")}`;
-
-            if (project.date) {
-                const dateEl = document.createElement("p");
-                dateEl.className = "card-text text-muted mb-2";
-                dateEl.textContent = `Date: ${project.date}`;
-                cardBody.appendChild(dateEl);
-            }
-
-            const btn = document.createElement("a");
-            btn.href = project.url;
-            btn.className = "btn btn-primary mt-auto";
-            btn.textContent = "Open Notebook";
-            btn.target = "_blank";
-
-            cardBody.appendChild(title);
-            cardBody.appendChild(description);
-            cardBody.appendChild(categoryEl);
-            cardBody.appendChild(btn);
-
-            card.appendChild(cardBody);
-            col.appendChild(card);
-            container.appendChild(col);
-        });
-
-        displayedCount += batchSize;
-
-        if (displayedCount >= filteredProjects.length) {
-            seeMoreBtn.style.display = "none";
-        } else {
-            seeMoreBtn.style.display = "inline-block";
-        }
-    }
-
-    seeMoreBtn.addEventListener("click", () => {
-        displayProjects(filterSelect.value);
-    });
-
-    loadProjects();
-</script>
+            loadProjects();
+        </script>
+    </body>
+</html>
