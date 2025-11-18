@@ -23,6 +23,8 @@
             background-color: var(--dark-bg);
             color: var(--light-text);
             scroll-behavior: smooth;
+            /* FIX CRÍTICO para problemas de layout horizontal em mobile e cross-browser */
+            overflow-x: hidden; 
         }
         /* Estilo personalizado para botões de destaque */
         .btn-primary {
@@ -209,7 +211,7 @@
                             <p class="text-teal-400 text-lg">Horizon</p>
                         </div>
                         <div class="text-right">
-                            <p class="text-sm text-gray-400 font-semibold">Set de 2025 – o momento</p>
+                            <p class="text-sm text-gray-400 font-semibold">Set de 2025 – o momento (3 meses)</p>
                             <p class="text-sm text-gray-500">Remota</p>
                         </div>
                     </div>
@@ -235,7 +237,7 @@
                             <p class="text-teal-400 text-lg">Empresa de Logística/Operações</p>
                         </div>
                         <div class="text-right">
-                            <p class="text-sm text-gray-400 font-semibold">Fev 2024 – o momento</p>
+                            <p class="text-sm text-gray-400 font-semibold">Fev 2024 – Presente</p>
                         </div>
                     </div>
                     <p class="text-gray-300">
@@ -399,24 +401,13 @@
 
             <!-- Lista de Certificados -->
             <div class="max-w-4xl mx-auto space-y-4">
-
-                <div class="certificate-item">
-                    <div class="flex items-center">
-                        <i data-lucide="award" class="h-6 w-6 mr-4 text-teal-400 flex-shrink-0"></i>
-                        <div>
-                            <p class="text-lg font-semibold text-white">Machine Learning de A a Z</p>
-                            <p class="text-sm text-gray-400">IA Expert Academy</p>
-                        </div>
-                    </div>
-                    <p class="certificate-date text-sm font-medium text-teal-400 flex-shrink-0">Out 2025</p>
-                </div>                
                 
                 <!-- Item 1 -->
                 <div class="certificate-item">
                     <div class="flex items-center">
                         <i data-lucide="award" class="h-6 w-6 mr-4 text-teal-400 flex-shrink-0"></i>
                         <div>
-                            <p class="text-lg font-semibold text-white">Formação Cientista de Dados</p>
+                            <p class="text-lg font-semibold text-white">Data Science Complete Formation</p>
                             <p class="text-sm text-gray-400">Udemy</p>
                         </div>
                     </div>
@@ -428,13 +419,26 @@
                     <div class="flex items-center">
                         <i data-lucide="award" class="h-6 w-6 mr-4 text-teal-400 flex-shrink-0"></i>
                         <div>
-                            <p class="text-lg font-semibold text-white">Machine Learning</p>
+                            <p class="text-lg font-semibold text-white">Introduction to Machine Learning</p>
                             <p class="text-sm text-gray-400">DATA</p>
                         </div>
                     </div>
                     <p class="certificate-date text-sm font-medium text-teal-400 flex-shrink-0">Jun 2025</p>
                 </div>
-                       <!-- Item 3 -->                
+
+                <!-- Item 3 -->
+                <div class="certificate-item">
+                    <div class="flex items-center">
+                        <i data-lucide="award" class="h-6 w-6 mr-4 text-teal-400 flex-shrink-0"></i>
+                        <div>
+                            <p class="text-lg font-semibold text-white">Data Analyst Professional</p>
+                            <p class="text-sm text-gray-400">EBAC</p>
+                        </div>
+                    </div>
+                    <p class="certificate-date text-sm font-medium text-teal-400 flex-shrink-0">Fev 2024</p>
+                </div>
+
+                <!-- Item 4 -->
                 <div class="certificate-item">
                     <div class="flex items-center">
                         <i data-lucide="award" class="h-6 w-6 mr-4 text-teal-400 flex-shrink-0"></i>
@@ -444,29 +448,20 @@
                         </div>
                     </div>
                     <p class="certificate-date text-sm font-medium text-teal-400 flex-shrink-0">Abr 2025</p>
-                </div>             
-                  <!-- Item 4 -->
+                </div>
+
+                <!-- Item 5 -->
                 <div class="certificate-item">
                     <div class="flex items-center">
                         <i data-lucide="award" class="h-6 w-6 mr-4 text-teal-400 flex-shrink-0"></i>
                         <div>
-                            <p class="text-lg font-semibold text-white">Formação Analista de Dados</p>
+                            <p class="text-lg font-semibold text-white">Data Analyst Formation</p>
                             <p class="text-sm text-gray-400">Data Science Academy</p>
                         </div>
                     </div>
                     <p class="certificate-date text-sm font-medium text-teal-400 flex-shrink-0">Dez 2024</p>
                 </div>
-                    <!-- Item 5 -->
-                <div class="certificate-item">
-                    <div class="flex items-center">
-                        <i data-lucide="award" class="h-6 w-6 mr-4 text-teal-400 flex-shrink-0"></i>
-                        <div>
-                            <p class="text-lg font-semibold text-white">Profissão Analista de Dados</p>
-                            <p class="text-sm text-gray-400">EBAC</p>
-                        </div>
-                    </div>
-                    <p class="certificate-date text-sm font-medium text-teal-400 flex-shrink-0">Fev 2024</p>
-                </div>
+                
                 <!-- Item 6 -->
                 <div class="certificate-item">
                     <div class="flex items-center">
@@ -480,7 +475,16 @@
                 </div>
                 
                 <!-- Adicione mais certificados aqui conforme for realizando -->
-
+                <div class="certificate-item opacity-50">
+                    <div class="flex items-center">
+                        <i data-lucide="award" class="h-6 w-6 mr-4 text-teal-400 flex-shrink-0"></i>
+                        <div>
+                            <p class="text-lg font-semibold text-white">Novo Certificado (Exemplo)</p>
+                            <p class="text-sm text-gray-400">Instituição</p>
+                        </div>
+                    </div>
+                    <p class="certificate-date text-sm font-medium text-teal-400 flex-shrink-0">Mês Ano</p>
+                </div>
 
             </div>
         </section>
@@ -499,6 +503,10 @@
                     <p class="text-xl font-medium text-white">
                         <i data-lucide="mail" class="inline-block h-5 w-5 mr-2 text-teal-400"></i>
                         E-mail: <a href="mailto:goldoniguilherme15@gmail.com" class="text-teal-400 hover:underline">goldoniguilherme15@gmail.com</a>
+                    </p>
+                    <p class="text-xl font-medium text-white">
+                        <i data-lucide="phone" class="inline-block h-5 w-5 mr-2 text-teal-400"></i>
+                        Celular: <a href="tel:+5511978340467" class="text-teal-400 hover:underline">+55 11 97834-0467</a>
                     </p>
                     <p class="text-xl font-medium text-white">
                         <i data-lucide="linkedin" class="inline-block h-5 w-5 mr-2 text-teal-400"></i>
